@@ -1,0 +1,2036 @@
+/*
+Theme Name: Pruning My Pothos
+Theme URI: https://pruningmypothos.com
+Author: Shailesh
+Description: A minimal, modern boho-inspired WordPress theme designed for clarity and reflection.
+Version: 1.0
+Text Domain: pruningmypothos
+*/
+
+/* ------------------ */
+/* ✅ CSS Variables for Colors */
+/* ------------------ */
+:root {
+  --primary-color: #111111;         /* Crisp black for headings/nav */
+  --secondary-color: #333333;       /* For paragraph and soft text */
+  --accent-color: #d8cfc4;          /* Subtle pearl beige */
+  --accent-hover-color: #c1b8ae;    /* Darker pearl for hover */
+  --background-color: #fefdfc;      /* Soft off-white */
+  --light-background: #f9f6f2;      /* Used in cards, sections */
+}
+html {
+  overflow-x: hidden;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Subtle scrollbar for WebKit (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #c1b8ae;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ------------------ */
+/* ✅ Global Reset & Defaults */
+/* ------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Manrope', sans-serif;
+  background-color: var(--background-color);
+  color: var(--primary-color);
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover,
+a:focus {
+  color: var(--accent-hover-color);
+  outline: none;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ------------------ */
+/* ✅ Dark Mode */
+/* ------------------ */
+body.dark-mode {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+
+body.dark-mode a:hover {
+  color: #e2c9a6;
+}
+
+/* ------------------ */
+/* ✅ Typography */
+/* ------------------ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--primary-color);
+  margin-top: 0;
+}
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2.2rem; }
+h3 { font-size: 1.6rem; }
+
+p {
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+}
+
+/* ------------------ */
+/* ✅ Buttons */
+/* ------------------ */
+.cta-btn,
+button,
+.read-more-btn,
+.personal-btn,
+.professional-btn,
+.philosophical-btn {
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  padding: 14px 24px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  will-change: transform;
+  display: inline-block;
+  text-align: center;
+  margin: 20px auto; /* Centers the buttons */
+}
+
+.cta-btn:hover,
+button:hover,
+.read-more-btn:hover,
+.personal-btn:hover,
+.professional-btn:hover,
+.philosophical-btn:hover {
+  background-color: var(--accent-hover-color);
+  transform: translateY(-2px);
+}
+
+button:focus,
+.cta-btn:focus,
+.read-more-btn:focus,
+.personal-btn:focus,
+.professional-btn:focus,
+.philosophical-btn:focus {
+  outline: 2px solid var(--accent-hover-color);
+}
+
+/* ------------------ */
+/* ✅ Header / Navbar */
+/* ------------------ */
+.boho-header {
+  background: linear-gradient(120deg, var(--light-background), var(--background-color));
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
+}
+
+.header-logo a {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: bold; /* to match the typewriter title */
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.header-logo em {
+  font-style: italic;
+  font-family: 'Space Grotesk', sans-serif;
+  position: relative;
+  left: -2px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+}
+
+.header-nav {
+  display: flex;
+  gap: 25px;
+  list-style: none;
+}
+
+.header-nav li a {
+  font-weight: 500;
+  padding: 8px 12px;
+}
+
+/* Center the navigation container on desktop */
+.header-nav-container {
+  flex: 1;
+  text-align: center;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+/* Responsive Nav for Mobiles */
+@media (max-width: 768px) {
+  .header-nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    background-color: var(--light-background);
+    width: 200px;
+    padding: 20px;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  .header-nav.show {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .header-nav li a {
+    padding: 12px 0;
+    font-size: 1.2rem;
+  }
+}
+
+/* ✅ Blog Page Filter Buttons */
+
+.filter-link {
+  background-color: #fff; /* match resources */
+  color: var(--primary-color);
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 1rem;
+  display: inline-block;
+  text-align: center;
+  margin: 0 10px 10px 0;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* match resources */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.filter-link:hover {
+  background-color: var(--accent-hover-color);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ✅ Blog Category Band Styling (Improved Version) */
+.blog-category-grid {
+  background-color: #f6f1ea; /* Warmer light background for better separation */
+  padding: 40px 20px;
+  text-align: center;
+  margin-bottom: 60px; /* Adds space before blog posts */
+}
+
+.blog-category-grid h2 {
+  font-size: 1.75rem; /* slightly smaller for balance */
+  margin-bottom: 20px;
+  font-family: 'Space Grotesk', sans-serif;
+  text-align: center; /* ensure it's centered */
+}
+
+.blog-category-grid .category-intro {
+  font-size: 1rem;
+  color: var(--secondary-color);
+  margin-bottom: 40px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.category-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.category-card {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer; /* Better UX */
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.category-card .icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+/* ------------------ */
+/* ✅ Footer - Compact & Aligned */
+/* ------------------ */
+.boho-footer {
+  background-color: var(--light-background);
+  color: var(--primary-color);
+  padding: 20px 10px; /* Reduced padding for a smaller footer */
+  font-size: 0.9rem;  /* Slightly smaller font size */
+  transition: background-color 0.3s ease;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  align-items: start;
+}
+
+/* Newsletter section on the left column */
+.footer-container .newsletter-section {
+  grid-column: 1 / 2;
+}
+
+/* Footer content (branding, links, social) on the right column */
+.footer-container .footer-content {
+  grid-column: 2 / 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* Style each right column block */
+.footer-brand,
+.footer-links,
+.footer-social {
+  flex: 1 1 100px;
+  text-align: left;
+}
+
+/* Adjust headings in the footer */
+.footer-brand h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.footer-links h4,
+.footer-social h4 {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+/* Quick links and social links list styling */
+.footer-links ul,
+.footer-social ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li,
+.footer-social li {
+  margin-bottom: 5px;
+}
+
+.footer-links li a,
+.footer-social a {
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links li a:hover,
+.footer-social a:hover {
+  color: var(--accent-hover-color);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.8rem;
+  border-top: 1px solid #ccc;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .footer-container .newsletter-section,
+  .footer-container .footer-content {
+    grid-column: auto;
+  }
+  .footer-content {
+    justify-content: center;
+  }
+  .footer-brand,
+  .footer-links,
+  .footer-social {
+    text-align: center;
+  }
+}
+
+/* ------------------ */
+/* ✅ Homepage Hero Section */
+/* ------------------ */
+.hero-section {
+  background: linear-gradient(to bottom, #faf3ed, #fff); /* Your original soft backdrop */
+  padding: 100px 20px;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Typewriter Title */
+.typewriter-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3rem;
+  font-weight: 300;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background-color: var(--primary-color);
+  animation: blink 0.7s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Subtitle */
+.hero-subtitle {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  color: var(--secondary-color);
+}
+
+/* Transformation Lines */
+.hero-subtext {
+  margin-bottom: 40px;
+}
+
+.hero-line {
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 8px;
+  color: var(--primary-color);
+}
+
+.hero-line span {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* CTA Buttons */
+.hero-cta-buttons {
+  margin-top: 35px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.cta-btn {
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* 🔴 RED PILL — Get Uncomfortable */
+#uncomfortable-btn {
+  background-color: #EE4B2B;
+  color: #fff;
+  border: 2px solid #EE4B2B;
+}
+
+#uncomfortable-btn::after {
+  content: "→ Growth Begins";
+  color: #28a745;
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+#uncomfortable-btn:hover::after {
+  opacity: 1;
+}
+
+#uncomfortable-btn:hover {
+  color: transparent;
+}
+
+/* 🔵 BLUE PILL — Browse Freely */
+.cta-btn.secondary {
+  background-color: #00BFFF;
+  color: #fff;
+  border: 2px solid #00BFFF;
+}
+
+.cta-btn.secondary::after {
+  content: "→ Explore the Blog";
+  color: #000;
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.cta-btn.secondary:hover::after {
+  opacity: 1;
+}
+
+.cta-btn.secondary:hover {
+  color: transparent;
+}
+/* --------------------------------------------- */
+/* ✅ Restore Animated Fade-In for hero-line Text */
+/* --------------------------------------------- */
+
+.hero-line {
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 8px;
+  color: var(--primary-color);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.hero-line:nth-child(1) {
+  animation-delay: 0.4s;
+}
+
+.hero-line:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+.hero-line:nth-child(3) {
+  animation-delay: 1.2s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Featured Post */
+.featured-post {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin: 0 auto;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 400px;
+}
+
+.featured-post .read-more-btn {
+  margin-top: auto;
+}
+
+/* Blog Grid */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 30px;
+}
+
+@media (max-width: 1024px) {
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.post-card {
+  background-color: var(--light-background);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  text-align: left;
+  will-change: transform;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+}
+
+.post-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.post-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 320px;
+}
+
+.post-category {
+  font-size: 0.85rem;
+  color: var(--secondary-color);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.post-title {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.post-excerpt {
+  color: var(--secondary-color);
+  margin-bottom: 15px;
+}
+
+/* ------------------ */
+/* Scroll To Top */
+/* ------------------ */
+#scrollToTopBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  z-index: 10000;
+  transition: opacity 0.3s ease;
+}
+
+#scrollToTopBtn:hover {
+  background-color: var(--accent-hover-color);
+}
+
+/* ------------------ */
+/* Typewriter Effect */
+/* ------------------ */
+.typewriter-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3rem;
+  font-weight: 300; /* Lighter font weight */
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1.2; /* Helps keep text on one line */
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background-color: var(--primary-color);
+  animation: blink 0.7s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@media (max-width: 480px) {
+  .typewriter-title {
+    font-size: 1.6rem; /* Smaller so it fits on one line on mobile */
+    text-align: center;
+  }
+}
+
+body.dark-mode .cursor {
+  background-color: #e0e0e0;
+}
+
+/* ------------------ */
+/* Dark Mode Toggle Icon (Only one icon used) */
+/* ------------------ */
+#darkModeToggle {
+  border-radius: 6px;
+  padding: 6px 10px;
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#darkModeToggle:hover {
+  background-color: var(--accent-hover-color);
+}
+
+/* Dark mode version */
+body.dark-mode #darkModeToggle {
+  background-color: #333;
+  color: #fff;
+}
+
+#darkModeToggle:hover {
+  opacity: 0.8;
+}
+/* ------------------------------------------ */
+/* ✅ ABOUT PAGE STYLING */
+/* ------------------------------------------ */
+
+.about-section {
+  padding: 80px 20px;
+  background-color: var(--background-color);
+  color: var(--primary-color);
+}
+
+.about-intro {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 80px;
+}
+
+.about-intro h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.about-intro p {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+}
+
+/* Split Story Layout */
+.split-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 100px;
+}
+
+.story-image,
+.story-text {
+  flex: 1 1 400px;
+}
+
+.story-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Meet the Crew Section */
+.about-team-section {
+  text-align: center;
+  margin-bottom: 100px;
+}
+
+.team-grid {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-top: 40px;
+}
+
+.team-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  text-align: center;
+  padding: 30px 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+.team-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.team-role {
+  font-size: 0.95rem;
+  color: var(--secondary-color);
+  margin-bottom: 5px;
+}
+
+.team-quote {
+  font-size: 0.95rem;
+  color: var(--secondary-color);
+  font-style: italic;
+}
+
+/* Core Beliefs */
+.about-values-section {
+  text-align: center;
+  margin-bottom: 100px;
+}
+
+.about-values-section ul {
+  list-style: none;
+  padding: 0;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.about-values-section li {
+  font-size: 1.1rem;
+  padding: 12px 0;
+  color: var(--secondary-color);
+  border-bottom: 1px dashed #ddd;
+}
+
+/* Final CTA */
+.about-outro {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.about-outro h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.about-outro p {
+  font-size: 1.1rem;
+  color: var(--secondary-color);
+  margin-bottom: 30px;
+}
+
+/* Fade-in animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .split-layout {
+    flex-direction: column;
+  }
+
+  .about-intro h1 {
+    font-size: 2.2rem;
+  }
+
+  .about-intro p,
+  .about-outro p {
+    font-size: 1rem;
+  }
+}
+
+/* ------------------ */
+/* ✅ Archive Page Hero */
+/* ------------------ */
+
+.archive-hero-section {
+  background-color: #faf3ed;
+  padding: 80px 20px 60px;
+  text-align: center;
+  border-bottom: 1px dashed #e0d4c5;
+}
+
+.archive-title {
+  font-size: 2.8rem;
+  margin-bottom: 20px;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--primary-color);
+}
+
+.archive-description {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ------------------ */
+/* ✅ Pagination Styling */
+/* ------------------ */
+
+.pagination {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.pagination .page-numbers {
+  display: inline-block;
+  margin: 0 10px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  background-color: #f2ebe5;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.pagination .page-numbers:hover,
+.pagination .current {
+  background-color: var(--accent-hover-color);
+  color: #fff;
+}
+
+/* ------------------ */
+/* ✅ No Posts Fallback */
+/* ------------------ */
+
+.no-posts {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--secondary-color);
+  margin-top: 60px;
+}
+
+/* ------------------ */
+/* ✅ Gallery Page Styling (Updated) */
+/* ------------------ */
+.gallery-hero {
+  background: linear-gradient(135deg, #faf3ed, #fdfaf6);
+  text-align: center;
+  padding: 80px 20px 40px;
+}
+
+.gallery-hero h1 {
+  font-size: 3rem;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.gallery-hero p {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.gallery-carousel {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 40px 20px 80px;
+  -webkit-overflow-scrolling: touch;
+
+  scroll-padding-left: 20px;   /* ✅ Ensures first card aligns */
+  scroll-snap-align: start;    /* ✅ Aligns each snap point cleanly */
+}
+
+.gallery-section {
+  background-color: var(--light-background);
+  padding: 60px 20px;
+  border-top: 1px solid #e5ded5;
+  border-bottom: 1px solid #e5ded5;
+}
+
+.gallery-card {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  width: 340px;
+  height: 420px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.gallery-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  transition: transform 0.4s ease;
+}
+
+.gallery-card:hover img {
+  transform: scale(1.08) translateY(-8px);
+}
+
+.gallery-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  z-index: 2;
+  pointer-events: none;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+
+  /* NEW: Text truncation for up to 3 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 4.5em;
+
+  /* 🔧 ADD THESE FOR HOVER TO WORK */
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.gallery-card:hover .gallery-caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ✅ Modal */
+.gallery-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(20, 20, 20, 0.9);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.4s ease;
+}
+
+.gallery-modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  text-align: center;
+}
+
+.gallery-modal img {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 12px;
+}
+
+.gallery-modal p {
+  color: #fff;
+  margin-top: 12px;
+  font-size: 1rem;
+}
+
+.gallery-modal-close {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 2rem;
+  background: #fff;
+  color: #333;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@media (max-width: 600px) {
+  .gallery-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 16px;
+    padding: 40px 16px 80px;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    will-change: scroll-position; /* ✅ Helps prevent lag/jitter */
+  }
+
+  .gallery-carousel > .gallery-card {
+    scroll-snap-align: start;
+    scroll-snap-stop: always; /* ✅ Ensures the scroll lands fully */
+  }
+
+  .gallery-card {
+    width: 72vw; /* ✅ Slightly smaller for cleaner spacing */
+    height: 300px;
+    flex-shrink: 0; /* ✅ Prevents cards from shrinking and causing jitter */
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    background-color: #fff;
+  }
+
+  .gallery-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 0;
+  }
+
+  .gallery-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 14px 12px;
+    font-size: 0.85rem;
+    color: #fff;
+    line-height: 1.4;
+    z-index: 2;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+
+    /* Truncation */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}
+
+/* ------------------ */
+/* ✅ Contact Page Styles */
+/* ------------------ */
+
+.contact-content {
+  text-align: center;
+  margin-top: 40px;
+  padding: 0 20px;
+}
+
+.contact-content p {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+
+.contact-form {
+  background-color: var(--light-background);
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.contact-form h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.contact-form label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: var(--primary-color);
+}
+
+.contact-form input, .contact-form textarea {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.contact-form input:focus, .contact-form textarea:focus {
+  border-color: var(--accent-color);
+  outline: none;
+}
+
+.contact-form button {
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  padding: 14px 24px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+  text-align: center;
+}
+
+.contact-form button:hover {
+  background-color: var(--accent-hover-color);
+  transform: translateY(-2px);
+}
+
+.contact-form button:focus {
+  outline: 2px solid var(--accent-hover-color);
+}
+
+/* ------------------ */
+/* ✅ Newsletter Section Styling */
+/* ------------------ */
+
+.newsletter-signup {
+  background-color: var(--light-background);
+  padding: 40px;
+  margin-top: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.newsletter-signup h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.newsletter-signup p {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  margin-bottom: 20px;
+}
+
+#mc_embed_signup form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#mc_embed_signup form input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+#mc_embed_signup form button {
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  padding: 14px 24px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+  text-align: center;
+}
+
+#mc_embed_signup form button:hover {
+  background-color: var(--accent-hover-color);
+  transform: translateY(-2px);
+}
+
+#mc_embed_signup form button:focus {
+  outline: 2px solid var(--accent-hover-color);
+}
+
+@media (max-width: 768px) {
+  .contact-form, .newsletter-signup {
+    padding: 20px;
+    max-width: 100%;
+  }
+}
+
+/* Search Bar Container */
+.searchform {
+  display: flex;
+  justify-content: center; /* Center the search bar */
+  align-items: center; /* Vertically center */
+  margin: 30px 0; /* Add space around the search bar */
+}
+
+/* Search Input Box */
+#search-bar {
+  width: 80%; /* Makes the input box larger */
+  max-width: 400px; /* Max width for desktop */
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ddd; /* Light border color */
+  margin-right: 10px;
+  transition: all 0.3s ease; /* Smooth transition for focus */
+}
+
+/* Input Focus */
+#search-bar:focus {
+  border-color: var(--accent-color); /* Highlight border on focus */
+  outline: none;
+}
+
+/* Search Button */
+#search-btn {
+  background-color: var(--accent-color); /* Button background color */
+  color: var(--primary-color); /* Text color */
+  padding: 12px 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+/* Search Button Hover */
+#search-btn:hover {
+  background-color: var(--accent-hover-color); /* Hover effect */
+}
+
+/* Search Icon Size */
+#search-btn .fa-search {
+  font-size: 1.3rem; /* Adjust the icon size */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  #search-bar {
+    width: 80%; /* On mobile, it should still be wide but responsive */
+  }
+}
+/* ------------------------------------------ */
+/* ✅ IMPROVED CATEGORY LIST & SEARCH SECTION */
+/* ------------------------------------------ */
+
+/* Updated Category Section Styling */
+.resource-categories {
+  background-color: var(--light-background);
+  padding: 40px 20px;
+  text-align: center;
+  border-top: 1px solid #e5ded5;
+  border-bottom: 1px solid #e5ded5;
+  margin-top: 60px;
+}
+
+.resource-categories h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.resource-categories ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.resource-categories li {
+  background-color: #fff;
+  padding: 10px 20px;
+  border-radius: 999px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  font-weight: 500;
+  font-size: 1rem;
+  border: 1px solid var(--accent-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.resource-categories li:hover {
+  background-color: var(--accent-hover-color);
+  color: #fff;
+}
+
+.resource-categories a {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+  padding: 2px 6px;
+}
+
+/* Updated Search Section Styling */
+.resource-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 40px 0;
+}
+
+/* ------------------ */
+/* ✅ Updated Search Bar Styling – Pill Style Under Category */
+
+.resource-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 40px 0;
+}
+
+.resource-search input[type="text"] {
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  width: 100%;
+  max-width: 400px;
+  background-color: #fff;
+}
+
+.resource-search button {
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.resource-search button:hover {
+  background-color: var(--accent-hover-color);
+}
+
+@media (max-width: 600px) {
+  .resource-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .resource-search input[type="text"] {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .resource-search button {
+    width: 100%;
+  }
+}
+
+/* ------------------ */
+/* ✅ Featured Resource Cards (Resources Page) */
+/* ------------------ */
+
+.featured-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.featured-resource-card {
+  background-color: var(--light-background);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 380px;
+}
+
+.featured-resource-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.featured-resource-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.featured-resource-card h3 {
+  font-size: 1.3rem;
+  margin: 10px 0;
+  font-weight: 600;
+}
+
+.featured-resource-card p {
+  font-size: 1rem;
+  color: var(--secondary-color);
+  margin-bottom: auto;
+}
+
+.resource-btn {
+  margin-top: 20px;
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.resource-btn:hover {
+  background-color: var(--accent-hover-color);
+  transform: translateY(-2px);
+}
+
+/* Responsive tweak */
+@media (max-width: 768px) {
+  .featured-resource-card {
+    padding: 16px;
+    min-height: auto;
+  }
+
+  .featured-resource-card img {
+    height: 140px;
+  }
+}
+
+/* ------------------ */
+/* ✅ Antithesis Page Styling */
+/* ------------------ */
+
+.antithesis-hero {
+  padding: 100px 20px 60px;
+  background-color: var(--background-color);
+  text-align: center;
+}
+
+.antithesis-hero h1 {
+  font-size: clamp(1.6rem, 6vw, 3rem);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: clamp(1.6rem, 6vw, 3rem);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  text-align: center;
+}
+
+.antithesis-hero h2 {
+  font-size: 1.4rem;
+  color: var(--secondary-color);
+  margin-top: 10px;
+  font-weight: 400;
+}
+
+.antithesis-hero p {
+  font-size: 1.1rem;
+  color: var(--secondary-color);
+  max-width: 680px;
+  margin: 20px auto 40px;
+  line-height: 1.6;
+}
+
+.antithesis-hero .cta-btn {
+  margin-top: 20px;
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.4rem;
+    line-height: 1.3;
+    letter-spacing: -0.5px;
+  }
+}
+.sss-hero-section .hero-subtitle,
+.sss-hero-section p,
+.sss-hero-section .cta-btn {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.sss-hero-section .cta-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1rem;
+}
+
+/* ------------------ */
+/* ✅ Prompt vs Pause Section */
+/* ------------------ */
+.prompt-vs-pause {
+  padding: 80px 20px;
+  background-color: var(--light-background);
+  text-align: center;
+}
+
+.contrast-title {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.contrast-title span {
+  color: #EE4B2B;
+  font-weight: 600;
+}
+
+.contrast-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.left-column p,
+.right-column p {
+  font-size: 1.1rem;
+  color: var(--secondary-color);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.right-column p {
+  font-weight: 500;
+}
+
+.pause-quote {
+  font-style: italic;
+  font-size: 1.2rem;
+  margin-top: 50px;
+  color: var(--primary-color);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .contrast-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+/* ------------------ */
+/* ✅ Antithesis Grid Section */
+/* ------------------ */
+.antithesis-section {
+  background-color: #fff;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.antithesis-section h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.antithesis-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.antithesis-grid div {
+  flex: 1 1 280px;
+  background-color: var(--light-background);
+  padding: 30px 20px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+}
+
+.antithesis-grid h4 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.antithesis-grid ul {
+  padding-left: 1.2rem;
+  list-style: none;
+}
+
+.antithesis-grid li {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: var(--secondary-color);
+  line-height: 1.6;
+}
+
+/* ------------------ */
+/* ✅ Gut Check Section */
+/* ------------------ */
+.gut-check-section {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.gut-check-section h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.gut-check-section p {
+  font-size: 1.1rem;
+  color: var(--secondary-color);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ------------------ */
+/* ✅ External Links Grid */
+/* ------------------ */
+.external-links-section {
+  padding: 80px 20px;
+  background-color: #f7f6f4;
+  text-align: center;
+}
+
+.external-links-section h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.external-links-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.link-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 24px 28px;
+  max-width: 280px;
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.link-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-4px);
+}
+
+.link-card h4 {
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.link-card p {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* ✅ Center-aligned hero content for Sans Serif Sentiments */
+.sss-hero-section .container {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 100px 20px 60px;
+}
+
+/* ✅ SAN SERIF SENTIMENTS: Thought Blocks Layout */
+.sss-thought-blocks {
+  padding: 100px 20px;
+  background-color: var(--background-color);
+  border-top: 1px dashed #e0d4c5;
+  border-bottom: 1px dashed #e0d4c5;
+}
+
+.sss-heading {
+  text-align: center;
+  margin-bottom: 60px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sss-title {
+  font-size: 2.4rem;
+  font-family: 'Space Grotesk', sans-serif;
+  margin-bottom: 10px;
+}
+
+.sss-subtitle {
+  font-style: italic;
+  color: var(--secondary-color);
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+/* ✅ Syllable Breakdown Hover Effect */
+.sss-breakdown {
+  background: #fff8f1;
+  padding: 20px;
+  border-left: 5px solid var(--accent-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+  text-align: left;
+  max-width: 700px;
+  margin: 0 auto 60px;
+  transition: all 0.3s ease;
+}
+
+.sss-breakdown:hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px);
+  background-color: #fff3e7;
+}
+
+/* ✅ Thought Blocks Grid */
+.thought-blocks-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+}
+
+/* ✅ Individual Thought Card */
+.thought-block {
+  background-color: var(--light-background);
+  padding: 24px 20px;
+  border-left: 4px dashed var(--accent-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease, background-color 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 0.6s ease forwards;
+  will-change: transform;
+}
+
+.thought-block:hover {
+  background-color: #fdf8f2;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  transform: translateY(-8px) scale(1.01);
+  filter: brightness(1.02);
+}
+
+.commit-label {
+  font-size: 0.85rem;
+  color: var(--accent-hover-color);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.thought-block p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--secondary-color);
+}
+
+.thought-block em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+/* ✅ Final CTA */
+.cta-block {
+  text-align: center;
+  padding-top: 60px;
+  border: none;
+  background: none;
+  box-shadow: none;
+  width: 100%;              /* ensure full width for centering */
+  display: flex;
+  justify-content: center;  /* center contents horizontally */
+}
+
+.cta-block .cta-btn {
+  background-color: var(--accent-color);
+  padding: 14px 28px;
+  font-weight: 600;
+  border-radius: 999px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cta-block .cta-btn:hover {
+  background-color: var(--accent-hover-color);
+  transform: translateY(-2px);
+}
+
+/* ✅ Animation Keyframes */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✅ Responsive Adjustments */
+@media (max-width: 768px) {
+  .sss-title {
+    font-size: 2rem;
+  }
+  .thought-block p {
+    font-size: 1rem;
+  }
+}
