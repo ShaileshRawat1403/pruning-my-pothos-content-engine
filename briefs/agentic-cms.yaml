@@ -1,0 +1,21 @@
+title: Agentic CMS
+slug: agentic-cms
+tags:
+  - agentic ai
+  - agentic-cms
+  - ai agents
+style_profile: pruningmypothos
+blog_mode: sectional
+planner: outline
+no_external: true
+sources:
+  allow:
+    - pruningmypothos.com
+    - docs.crewai.com
+    - docs.flowiseai.com
+outputs:
+  - blog
+  - linkedin
+publish:
+  status: draft
+persona: pm

@@ -1,0 +1,66 @@
+title: "AI-Assisted Content Governance for SMBs: A Practical Playbook"
+slug: ai-content-governance-smbs-focused
+tags:
+  - docs-as-code
+  - smbs
+  - governance
+  - automation
+audience: founders, PMs, content leads at small teams
+goal: inform
+tone: direct
+length: medium
+style_profile: pruningmypothos
+blog_mode: sectional
+planner: outline
+no_external: false
+sources:
+  allow:
+    - pruningmypothos.com
+    - docs.github.com
+    - developer.wordpress.org
+    - www.mkdocs.org
+    - docusaurus.io
+    - www.nist.gov
+  paths:
+    - content/ai-content-governance-playbook.md
+    - content/governance-enterprise.md
+    - content/governance.md
+    - content/ai-agentic-smbs.md
+exclude_terms:
+  - LoRaWAN
+  - microservices
+  - Milvus
+  - Cross Encoder
+  - LangChain
+  - React
+  - MDX
+  - Manufacturing
+  - CMAPSS
+  - MCP
+  - RUL
+must_include_terms:
+  - docs-as-code
+  - governance
+  - allowlist
+  - lint
+  - retrieval
+  - guardrails
+  - audit
+  - WordPress
+min_lengths:
+  Overview: 200
+  Why It Matters: 180
+  Prerequisites: 150
+  Steps: 220
+  Examples: 150
+  FAQs: 130
+  References: 10
+outputs:
+  - blog
+  - linkedin
+  - instagram
+  - github_doc
+publish:
+  status: draft
+style_examples:
+  - content/style-examples/*.md

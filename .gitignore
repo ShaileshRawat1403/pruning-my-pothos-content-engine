@@ -5,3 +5,7 @@ engine/.chroma/
 artifacts/
 .venv/
 .DS_Store
+.qdrant-initialized
+node_modules/
+dist/
+frontend/.vite/

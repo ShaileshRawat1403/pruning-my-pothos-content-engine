@@ -1,0 +1,29 @@
+title: "AI-Assisted Content Governance for SMBs: A Practical Playbook"
+slug: ai-content-governance-smbs
+tags: ["docs-as-code", "smbs", "governance", "automation"]
+audience: "founders, PMs, content leads at small teams"
+goal: "inform"
+tone: "direct"
+length: medium
+style_profile: pruningmypothos
+
+# Generate a long-form blog with sectional retrieval and a simple planner
+blog_mode: sectional
+planner: outline
+
+# Allow referencing only these domains in the References section
+sources:
+  allow:
+    - pruningmypothos.com
+    - docusaurus.io
+    - www.mkdocs.org
+    - www.llamaindex.ai
+
+# Produce blog + LinkedIn post
+outputs: [blog, linkedin]
+
+# Publish settings
+publish:
+  status: draft
+  # category_ids: [1]   # optional: numeric IDs in your WP instance
+  # tag_ids: [10, 11]   # optional: numeric IDs in your WP instance

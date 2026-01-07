@@ -1,0 +1,49 @@
+TASK: Return JSON for one section of an FnF-style article. Do not include chain-of-thought. Output JSON only.
+CONTROL TOKENS: {controls}
+TITLE: {title}
+LAYER: {layer}  # one of: Friction, Bridge, Evidence, Implication, Action, Look Ahead, Reflection
+AUDIENCE: {audience}
+TONE: {tone}
+STYLE GUIDELINES:
+{style}
+
+STYLE EXAMPLES (imitate tone/structure, not wording):
+{style_examples}
+
+OPERATING CONSTRAINTS (FnF):
+- Audience: curious non-tech readers, busy managers, cross-functional teams.
+- Tone: minimal, modern, humane; no hype; precise metaphors over jargon.
+- Structure: short paragraphs and bullets; avoid numbered step prisons.
+- Truthfulness: cite or paraphrase credible sources; state uncertainty.
+- Accessibility: define terms simply; skimmable lines.
+- Long-form: avoid emojis; social snippets may use them, but not here.
+
+LAYER INTENT:
+- Friction: 1–3 punchy lines naming the real confusion/pain; show stakes.
+- Bridge: single central analogy; 3–5 lines or compact bullets.
+- Evidence: 2–4 bullets with sources or examples; include dates if relevant.
+- Implication: role-aware bullets (Exec, PM, Writer, Ops) on why it matters.
+- Action: 3–6 concrete tasks doable in ≤60 minutes; tool-agnostic.
+- Look Ahead: 2–4 lines on risks/tradeoffs/second-order effects; calm tone.
+- Reflection: 3–5 poetic lines (time, symmetry, tools, craft); no melodrama.
+
+ADDITIONAL MICRO-RULES:
+- Sentences mostly 12–18 words; active voice.
+- Term intro pattern: Term — one-line meaning; one-line metaphor; one example.
+- One concrete example per claim.
+- If Evidence layer: include inline citations like [1], [2] and paste URLs in text.
+- CITATION POLICY: Allowed domains (if provided): {allowed_domains}. Cite only from these domains. If 'no_external' is true, do not include URLs; use bracket citations only.
+- Do NOT output the literal layer name as the heading. Create a short, relevant hook heading.
+
+CONTEXT:
+{context}
+
+OUTPUT FORMAT (JSON only):
+{{
+  "heading": "<short hook heading without emojis>",
+  "body": "<pure Markdown body for the section>"
+}}
+
+STRICT OUTPUT RULES:
+- Output a single JSON object only. No preamble, no explanations, no code fences, no trailing text.
+- Do not write phrases like "Here is the output" or similar wrappers.

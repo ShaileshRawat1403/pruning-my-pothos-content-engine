@@ -19,12 +19,24 @@ services:
       - ../:/app
     environment:
       - OLLAMA_URL=${OLLAMA_URL:-http://ollama:11434}
-      - GEN_MODEL=${GEN_MODEL:-llama3.1:8b-instruct}
-      - EMB_MODEL=${EMB_MODEL:-BAAI/bge-small-en-v1.5}
-      - DB_DIR=${DB_DIR:-engine/.chroma}
+      - GEN_MODEL=${GEN_MODEL:-llama3.2:3b}
+      - GEN_NUM_CTX=${GEN_NUM_CTX:-2048}
+      - GEN_NUM_PREDICT=${GEN_NUM_PREDICT:-600}
+      - EMB_MODEL=${EMB_MODEL:-nomic-embed-text:latest}
       - CONTENT_DIR=${CONTENT_DIR:-content}
+      - QDRANT_URL=${QDRANT_URL:-http://qdrant:6333}
+      - QDRANT_COLLECTION=${QDRANT_COLLECTION:-content}
     depends_on:
       - ollama
+      - qdrant
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    restart: unless-stopped
+    ports: ["6333:6333"]
+    volumes:
+      - qdrant_data:/qdrant/storage
 
 volumes:
   ollama: {}
+  qdrant_data: {}

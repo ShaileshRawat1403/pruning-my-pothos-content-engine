@@ -1,0 +1,45 @@
+type: blog
+title: "Docs-as-Code for SMBs: A Practical Guide"
+slug: docs-as-code-smbs-practical
+audience: SMB operators, founders, non-technical writers
+goal: explain how to adopt docs-as-code with simple tooling
+tone: direct
+length: medium
+tags: [docs-as-code, smbs, automation]
+
+# Outputs (blog only while tuning)
+outputs: [blog]
+no_external: true
+
+# Style
+style_profile: professional_enterprise
+style_examples:
+  - engine/styles/enterprise/examples/professional_enterprise.md
+
+# Long-form framework (tutorial style)
+blog_mode: sectional
+# framework: fnf      # disabled for plain Markdown sections
+# planner: outline    # optional; not needed for tutorial style
+
+publish:
+  status: draft
+
+sources:
+  allow:
+    - pruningmypothos.com
+    - sbert.net
+    - developer.wordpress.org
+    - ollama.ai
+    - trychroma.com
+    - qdrant.tech
+    - weaviate.io
+    - milvus.io
+    - github.com
+    - python.langchain.com
+    - docs.llamaindex.ai
+    - docs.flowiseai.com
+    - docs.crewai.com
+    - mkdocs.org
+    - docusaurus.io
+    - thegradient.pub
+    - distill.pub

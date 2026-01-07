@@ -1,0 +1,21 @@
+TASK: Propose a section plan for a blog post.
+TITLE: {title}
+AUDIENCE: {audience}
+GOAL: {goal}
+TONE: {tone}
+STYLE GUIDELINES:
+{style}
+
+STYLE EXAMPLES (imitate tone/structure, not wording):
+{style_examples}
+
+CONSTRAINTS:
+- Prefer these H2s if they fit: Overview, Why It Matters, Prerequisites, Steps, Examples, FAQs, References.
+- Include 5–8 sections total. Keep names short and clear.
+- End with References if applicable.
+
+CONTEXT:
+{context}
+
+OUTPUT FORMAT (JSON only):
+{"sections": ["Overview", "Why It Matters", "Prerequisites", "Steps", "Examples", "FAQs", "References"]}

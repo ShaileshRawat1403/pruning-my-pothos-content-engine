@@ -1,0 +1,20 @@
+type: blog
+title: Building a Lean AI Content Engine for Small Businesses
+slug: lean-ai-content-engine-smbs
+audience: founders, technical writers, SMB operators
+goal: explain how to set up a low-cost agentic content system with open-source tools
+tone: direct
+length: medium               # short | medium | long
+tags: [ai, content-engine, docs-as-code, small-business]
+publish:
+  status: draft            # change to publish/future later
+images:
+  mode: cc0
+  query: small business ai workflow
+sources:
+  allow:
+    - pruningmypothos.com
+    - sbert.net
+    - trychroma.com
+    - developer.wordpress.org
+    - ollama.ai

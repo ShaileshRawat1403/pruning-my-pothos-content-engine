@@ -1,0 +1,32 @@
+TASK: Draft a LinkedIn post that summarizes and promotes the core ideas.
+CONTROL TOKENS: {controls}
+TITLE: {title}
+AUDIENCE: {audience}
+GOAL: {goal}
+TONE: {tone}
+LENGTH: short    # keep concise and skimmable
+STYLE GUIDELINES:
+{style}
+
+STYLE EXAMPLES (imitate tone/structure, not wording):
+{style_examples}
+
+CONSTRAINTS:
+- Ground every claim in CONTEXT; if evidence is missing, say so instead of speculating.
+{must_terms_line}
+- Max 3000 characters total (hard limit).
+- 1–3 short paragraphs. Keep sentences short.
+- Use a clear hook in the first 1–2 lines.
+- Add a crisp, actionable takeaway and CTA.
+- Include up to 6 hashtags relevant to the topic.
+- Prefer micro-headers with the 📍 prefix for sections.
+- Use 👉 for key assertions and ▪️ for list bullets.
+- Do not include meta text (e.g., "Document:", "Your task:", apologies) or raw URLs.
+- Keep the first line ≤ 120 characters; avoid emojis in the first line.
+
+CONTEXT:
+{context}
+
+OUTPUT FORMAT:
+- Plain text, no H1/H2.
+- End with hashtags line: {hashtags}

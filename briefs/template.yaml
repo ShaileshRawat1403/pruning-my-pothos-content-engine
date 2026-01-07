@@ -1,0 +1,62 @@
+# Brief Template — copy to briefs/<your-topic>.yaml and fill in.
+
+# Core
+type: blog                      # content type (blog is supported)
+title: REPLACE_WITH_TITLE       # required
+slug: REPLACE_WITH_SLUG         # required; used for artifacts folder and WP slug
+audience: REPLACE_WITH_AUDIENCE # e.g., non-technical leaders, developers, SMB operators
+goal: REPLACE_WITH_GOAL         # e.g., explain, persuade, guide, announce
+tone: direct                    # e.g., direct, friendly, authoritative
+length: medium                  # short | medium | long (affects token cap)
+tags: [tag1, tag2, tag3]
+
+# Your nuanced take (feeds prompts; optional but recommended)
+thesis: >
+  REPLACE_WITH_ONE_LINE_ANGLE  # e.g., Chat without a curated KB is a parrot, not a copilot.
+angle_notes:
+  - REPLACE_WITH_POINT_1
+  - REPLACE_WITH_POINT_2
+  - REPLACE_WITH_POINT_3
+outcomes:
+  - REPLACE_WITH_READER_OUTCOME_1
+  - REPLACE_WITH_READER_OUTCOME_2
+
+# Style control
+style_profile: shailesh         # uses engine/styles/shailesh.md; change to your profile name
+# Inline style rules instead of using a profile (optional)
+# style: |
+#   Voice: clear, direct, helpful. Short lines. No fluff.
+
+# Provide 1..N files/globs to bias tone/structure (optional)
+# e.g., samples/voice/*.md or paths under content/
+style_examples:
+  - samples/voice/*.md
+
+# Platforms to generate alongside the blog draft
+outputs: [blog, linkedin, instagram, github_doc]
+
+# Long-form strategy
+blog_mode: sectional            # per-section RAG generation for longer posts
+planner: outline                # lightweight outline planning before sections
+
+# Sources allowlist (guardrail). If set, References must only contain these domains.
+sources:
+  allow:
+    - pruningmypothos.com
+    - sbert.net
+    - developer.wordpress.org
+
+# WordPress publish (optional). If WP creds are set in .env, creates a draft by default.
+publish:
+  status: draft                 # draft | publish | future
+  # date: 2025-01-31T10:00:00   # optional ISO8601 for scheduled posts
+  # category_ids: [1, 2]        # optional; WP REST expects numeric IDs
+
+# Social helpers (optional)
+# cta: Comment "KB FIRST" and I’ll share the starter kit.
+
+# Image policy (not used yet, placeholder for future tooling)
+images:
+  mode: cc0
+  query: REPLACE_STOCK_QUERY
+

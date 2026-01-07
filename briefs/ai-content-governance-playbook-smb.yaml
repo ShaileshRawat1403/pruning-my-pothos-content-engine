@@ -1,0 +1,22 @@
+title: 'RAG '
+slug: ai-content-governance-playbook-smb
+tags:
+- ai-governance
+- smbs
+- playbook
+style_profile: pruningmypothos
+blog_mode: sectional
+planner: outline
+no_external: false
+sources:
+  allow:
+  - nist.gov
+  - openpolicy.gov
+  - openai.com
+outputs:
+- blog
+- linkedin
+- instagram
+publish:
+  status: draft
+persona: sme

@@ -1,0 +1,84 @@
+sources:
+  # Vector Databases / Retrieval
+  - url: https://www.trychroma.com/
+    tags: [vector-db, chroma, retrieval]
+  - url: https://qdrant.tech/documentation/
+    tags: [vector-db, qdrant, retrieval]
+  - url: https://weaviate.io/developers/weaviate
+    tags: [vector-db, weaviate, retrieval]
+  - url: https://milvus.io/docs
+    tags: [vector-db, milvus, retrieval]
+  - url: https://github.com/facebookresearch/faiss/wiki
+    tags: [faiss, vector-search, retrieval]
+
+  # Embeddings / Sentence-Transformers
+  - url: https://www.sbert.net/
+    tags: [embeddings, sentence-transformers, sbert]
+  - url: https://www.sbert.net/examples/applications/semantic-search/README.html
+    tags: [embeddings, semantic-search, examples]
+  - url: https://huggingface.co/docs/sentence-transformers/index
+    tags: [embeddings, huggingface, docs]
+
+  # Reranking
+  - url: https://www.sbert.net/examples/applications/cross-encoder/README.html
+    tags: [reranker, cross-encoder, ranking]
+
+  # LLMs (Local) / Serving
+  - url: https://ollama.ai/library
+    tags: [ollama, llm, models]
+  - url: https://ollama.com/blog
+    tags: [ollama, llm, blog]
+
+  # Frameworks (RAG / Agents)
+  - url: https://python.langchain.com/docs/introduction/
+    tags: [langchain, rag, agents]
+  - url: https://docs.llamaindex.ai/en/stable/
+    tags: [llamaindex, rag]
+  - url: https://docs.flowiseai.com/
+    tags: [flowise, agents, no-code]
+  - url: https://docs.crewai.com/
+    tags: [crewai, agents]
+
+  # Eval (RAG & IR metrics)
+  - url: https://github.com/explodinggradients/ragas
+    tags: [ragas, evaluation, metrics]
+  - url: https://en.wikipedia.org/wiki/Discounted_cumulative_gain
+    tags: [ndcg, ir-metrics]
+  - url: https://en.wikipedia.org/wiki/Mean_reciprocal_rank
+    tags: [mrr, ir-metrics]
+
+  # WordPress (Publishing)
+  - url: https://developer.wordpress.org/rest-api/
+    tags: [wordpress, rest-api, publishing]
+
+  # Docs-as-Code
+  - url: https://www.mkdocs.org/
+    tags: [docs-as-code, mkdocs]
+  - url: https://docusaurus.io/docs
+    tags: [docs-as-code, docusaurus]
+
+  # General ML/AI (high-quality, public)
+  - url: https://distill.pub/
+    tags: [ml, essays, interpretability]
+  - url: https://thegradient.pub/
+    tags: [ml, essays]
+
+  # Agentic workflows & guardrails
+  - url: https://langchain-ai.github.io/langgraph/concepts/agentic_concepts/
+    tags: [agentic, langgraph, guardrails]
+  - url: https://docs.llamaindex.ai/en/stable/guides/workflows/agentic_workflows/
+    tags: [agentic, llamaindex, workflows]
+  - url: https://blog.langchain.dev/agentic-retrieval-guardrails/
+    tags: [agentic, langchain, guardrails]
+
+  # Responsible AI governance
+  - url: https://www.anthropic.com/research/constitutional-ai
+    tags: [responsible-ai, governance, constitutional]
+  - url: https://www.nist.gov/itl/ai-risk-management-framework
+    tags: [risk, governance, compliance]
+
+  # Change management & team rituals
+  - url: https://www.prosci.com/methodology/adkar
+    tags: [change-management, adoption, adkar]
+  - url: https://basecamp.com/shapeup
+    tags: [product-management, team-rituals, communication]

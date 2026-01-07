@@ -6,6 +6,11 @@ goal: simple, safe pruning steps
 tone: direct
 tags: [houseplants, pothos, pruning]
 social: true
+blog_mode: sectional
+planner: outline
+style_profile: poeticmayhem
+style_examples:
+  - engine/styles/creative/examples/poeticmayhem/few-shot-top20.md
 publish:
   status: draft              # draft | publish | future
   category_ids: []           # optional WordPress category IDs
@@ -16,3 +21,11 @@ images:
 sources:
   allow:
     - pruningmypothos.com
+  paths:
+    - content/plants/
+exclude_terms:
+  - Docusaurus
+  - Sentence Transformers
+  - Cross Encoder
+  - React
+  - MDX

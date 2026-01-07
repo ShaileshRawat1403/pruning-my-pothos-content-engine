@@ -1,0 +1,55 @@
+# One URL per line. Lines starting with # are ignored.
+
+# Vector Databases / Retrieval
+https://www.trychroma.com/
+https://qdrant.tech/documentation/
+https://weaviate.io/developers/weaviate
+https://milvus.io/docs
+https://github.com/facebookresearch/faiss/wiki
+
+# Embeddings / Sentence-Transformers
+https://www.sbert.net/
+https://www.sbert.net/examples/applications/semantic-search/README.html
+https://huggingface.co/docs/sentence-transformers/index
+
+# Reranking
+https://www.sbert.net/examples/applications/cross-encoder/README.html
+
+# LLMs (Local) / Serving
+https://ollama.ai/library
+https://ollama.com/blog
+
+# Frameworks (RAG / Agents)
+https://python.langchain.com/docs/introduction/
+https://docs.llamaindex.ai/en/stable/
+https://docs.flowiseai.com/
+https://docs.crewai.com/
+
+# Eval (RAG & IR metrics)
+https://github.com/explodinggradients/ragas
+https://en.wikipedia.org/wiki/Discounted_cumulative_gain
+https://en.wikipedia.org/wiki/Mean_reciprocal_rank
+
+# WordPress (Publishing)
+https://developer.wordpress.org/rest-api/
+
+# Docs-as-Code
+https://www.mkdocs.org/
+https://docusaurus.io/docs
+
+# General ML/AI references (high quality, public)
+https://distill.pub/
+https://thegradient.pub/
+
+# Agentic workflows & guardrails
+https://langchain-ai.github.io/langgraph/concepts/agentic_concepts/
+https://docs.llamaindex.ai/en/stable/guides/workflows/agentic_workflows/
+https://blog.langchain.dev/agentic-retrieval-guardrails/
+
+# Responsible AI governance
+https://www.anthropic.com/research/constitutional-ai
+https://www.nist.gov/itl/ai-risk-management-framework
+
+# Change management & team rituals
+https://www.prosci.com/methodology/adkar
+https://basecamp.com/shapeup

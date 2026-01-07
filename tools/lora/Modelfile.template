@@ -1,0 +1,12 @@
+FROM ./YOUR_MERGED_OR_BASE.gguf
+
+# Optional: bake defaults
+PARAMETER temperature 0.0
+
+# If your Ollama version supports LoRA adapters, add:
+# ADAPTER ./path/to/adapter.safetensors
+
+# SYSTEM
+# You can optionally bake a default system message. The engine already sends one,
+# so keep this empty unless you know you want a global default.
+

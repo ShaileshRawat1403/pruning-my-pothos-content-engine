@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pruning My Pothos</title>
+    <script>
+      (() => {
+        try {
+          const stored = localStorage.getItem("pmp-theme");
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          if (stored === "dark" || (!stored && prefersDark)) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (err) {
+          console.warn("theme bootstrap skipped", err);
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-stone-50 dark:bg-[#0c0a07] text-stone-900 dark:text-stone-100">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

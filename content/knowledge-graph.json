@@ -1,0 +1,176 @@
+{
+  "version": "1.0",
+  "generated_at": "2025-12-08T07:40:43.842264Z",
+  "root": {
+    "type": "site",
+    "id": "content-engine",
+    "children": [
+      {
+        "type": "collection",
+        "id": "briefs",
+        "children": [
+          {
+            "type": "brief",
+            "id": "docs-as-code-smbs-practical",
+            "path": "briefs/example-multiplatform.yaml",
+            "style_profile": "professional_enterprise",
+            "outputs": [
+              "blog"
+            ],
+            "sources_allow": [
+              "pruningmypothos.com",
+              "sbert.net",
+              "developer.wordpress.org"
+            ]
+          },
+          {
+            "type": "brief",
+            "id": "prune-pothos-healthier-growth",
+            "path": "briefs/example.yaml",
+            "style_profile": "poeticmayhem",
+            "outputs": [
+              "blog",
+              "linkedin",
+              "instagram"
+            ],
+            "sources_allow": [
+              "pruningmypothos.com"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "collection",
+        "id": "styles",
+        "children": [
+          {
+            "type": "style",
+            "id": "professional_enterprise",
+            "path": "engine/styles/enterprise/professional_enterprise.md"
+          },
+          {
+            "type": "style",
+            "id": "poeticmayhem",
+            "path": "engine/styles/creative/poeticmayhem.md"
+          },
+          {
+            "type": "style",
+            "id": "shailesh",
+            "path": "engine/styles/enterprise/shailesh.md"
+          },
+          {
+            "type": "style",
+            "id": "pruningmypothos",
+            "path": "engine/styles/legacy/pruningmypothos.md"
+          }
+        ]
+      },
+      {
+        "type": "collection",
+        "id": "content",
+        "children": [
+          {
+            "type": "source",
+            "id": "lora-training-guide",
+            "path": "content/LoRA Training Guide.md",
+            "tags": [
+              "lora",
+              "fine-tuning"
+            ]
+          },
+          {
+            "type": "source",
+            "id": "dli-rag-slides",
+            "path": "content/DLI-RAG-Slides.md",
+            "tags": [
+              "rag",
+              "slides"
+            ]
+          },
+          {
+            "type": "source",
+            "id": "agentic-primer",
+            "path": "content/Agentic.md",
+            "tags": [
+              "agents",
+              "planning"
+            ]
+          },
+          {
+            "type": "source",
+            "id": "ai-agent-factory",
+            "path": "content/pasted-note.md",
+            "tags": [
+              "agents",
+              "automation"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "collection",
+        "id": "vector-db",
+        "children": [
+          {
+            "type": "store",
+            "id": "qdrant",
+            "collection": "content",
+            "path": "engine/rag/vectorstore/"
+          }
+        ]
+      }
+    ]
+  },
+  "edges": [
+    {
+      "from": "prune-pothos-healthier-growth",
+      "to": "poeticmayhem",
+      "rel": "uses_style"
+    },
+    {
+      "from": "docs-as-code-smbs-practical",
+      "to": "professional_enterprise",
+      "rel": "uses_style"
+    },
+    {
+      "from": "docs-as-code-smbs-practical",
+      "to": "qdrant",
+      "rel": "writes_to"
+    },
+    {
+      "from": "lora-training-guide",
+      "to": "qdrant",
+      "rel": "ingested_to"
+    },
+    {
+      "from": "dli-rag-slides",
+      "to": "qdrant",
+      "rel": "ingested_to"
+    },
+    {
+      "from": "agentic-primer",
+      "to": "qdrant",
+      "rel": "ingested_to"
+    },
+    {
+      "from": "ai-agent-factory",
+      "to": "qdrant",
+      "rel": "ingested_to"
+    },
+    {
+      "from": "poeticmayhem",
+      "to": "engine/styles/creative/examples/poeticmayhem/few-shot-top20.md",
+      "rel": "has_examples"
+    },
+    {
+      "from": "poeticmayhem",
+      "to": "engine/styles/creative/poeticmayhem_guardrails.md",
+      "rel": "has_guardrails"
+    },
+    {
+      "from": "poeticmayhem",
+      "to": "engine/styles/creative/poeticmayhem_persona.txt",
+      "rel": "has_persona"
+    }
+  ]
+}

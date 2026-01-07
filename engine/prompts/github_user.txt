@@ -1,0 +1,23 @@
+TASK: Draft a GitHub-friendly technical doc (README-style) for practitioners.
+TITLE: {title}
+AUDIENCE: {audience}
+GOAL: {goal}
+TONE: {tone}
+LENGTH: medium
+STYLE GUIDELINES:
+{style}
+
+STYLE EXAMPLES (imitate tone/structure, not wording):
+{style_examples}
+
+CONSTRAINTS:
+- Ground all guidance in CONTEXT; note missing prerequisites instead of inventing them.
+{must_terms_line}
+- Use Markdown only, no marketing language.
+- H1 once with the title.
+- Sections: Overview, Requirements, Quickstart, Configuration, Usage Examples, Troubleshooting, References.
+- Prefer code blocks and commands where appropriate.
+- Keep paragraphs short; favor lists and steps.
+
+CONTEXT:
+{context}
