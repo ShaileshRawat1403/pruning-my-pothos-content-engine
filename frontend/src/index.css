@@ -255,6 +255,20 @@ a {
     background: var(--color-surface-2);
   }
 
+
+  .panel-inner {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    padding: 0.75rem;
+    min-height: 420px;
+  }
+
+  .chip-active {
+    background: var(--color-accent);
+    color: #ffffff;
+    border-color: transparent;
+  }
   .list-card {
     background: var(--color-surface-2);
     border: 1px solid var(--color-border);

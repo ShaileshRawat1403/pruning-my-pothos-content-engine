@@ -51,10 +51,23 @@ except Exception:  # pragma: no cover
     chunk_counts_for_paths = None  # type: ignore
     load_briefs_index = None  # type: ignore
 
+
+try:
+    from engine.graph.neo4j_store import fetch_graph, graph_status  # type: ignore
+except Exception:  # pragma: no cover
+    fetch_graph = None  # type: ignore
+    graph_status = None  # type: ignore
+
 app = FastAPI(
     title="Agentic Content Engine API",
     version="0.1.0",
 )
+
+# Load .env into process environment (only fill missing values).
+_env_vars, _ = load_env_preserve_comments()
+for _k, _v in _env_vars.items():
+    if _k not in os.environ or not os.environ.get(_k):
+        os.environ[_k] = _v
 
 # CORS for React dev/hosted frontends (default: allow all; override via API_CORS_ORIGINS=foo,bar)
 cors_origins = [o.strip() for o in os.getenv("API_CORS_ORIGINS", "*").split(",") if o.strip()]
@@ -87,6 +100,20 @@ class ChatRequest(BaseModel):
     first_party_only: Optional[bool] = None
     allowed_domains: Optional[List[str]] = None
 
+
+import re as _re
+
+
+def _clean_chat_answer(text: str) -> str:
+    if not text:
+        return text
+    cleaned = text
+    cleaned = _re.sub(r"\s*\[/?INST\]\s*", " ", cleaned)
+    cleaned = _re.sub(r"\s*<\/?s>\s*", " ", cleaned)
+    cleaned = _re.sub(r"(SYSTEM|USER|ASSISTANT)\s*:\s*", "", cleaned, flags=_re.I)
+    cleaned = _re.sub(r"^.*?RESPONSE:\s*", "", cleaned, flags=_re.S | _re.I)
+    return " ".join(cleaned.split()).strip()
+
 def get_ollama_url() -> str:
     return os.environ.get("OLLAMA_URL", "http://localhost:11434")
 
@@ -105,6 +132,21 @@ def _safe_content_path(rel_path: str) -> str:
 def read_root():
     """Health check endpoint."""
     return {"status": "ok"}
+
+
+
+@app.get("/api/graph/status")
+def get_graph_status():
+    if graph_status is None:
+        return {"ok": False, "detail": "graph backend unavailable"}
+    return graph_status()
+
+
+@app.get("/api/graph")
+def get_graph():
+    if fetch_graph is None:
+        return {"nodes": [], "links": []}
+    return fetch_graph()
 
 @app.get("/api/settings")
 def get_settings():
@@ -446,17 +488,29 @@ def api_chat(req: ChatRequest):
     k = req.top_k or int(os.getenv("RETRIEVE_K", "6"))
     # Optional first-party preference via env override
     prev_prefix = os.getenv("RETRIEVE_SOURCE_PREFIXES")
+    prev_exclude = os.getenv("RETRIEVE_EXCLUDE_REGEX")
+    chat_exclude = r"content/archive/broken|content/style-examples|content/chatbot-poc-open-stack-chatbot\.md"
+    os.environ["RETRIEVE_EXCLUDE_REGEX"] = chat_exclude
     if req.first_party_only:
         os.environ["RETRIEVE_SOURCE_PREFIXES"] = "content/"
     try:
         context, sources = retrieve(req.query, k=k)
+    except Exception:
+        context, sources = "", []
     finally:
         if req.first_party_only:
             if prev_prefix is None:
                 os.environ.pop("RETRIEVE_SOURCE_PREFIXES", None)
             else:
                 os.environ["RETRIEVE_SOURCE_PREFIXES"] = prev_prefix
+        if prev_exclude is None:
+            os.environ.pop("RETRIEVE_EXCLUDE_REGEX", None)
+        else:
+            os.environ["RETRIEVE_EXCLUDE_REGEX"] = prev_exclude
+
     context = _sanitize_context(context)
+    if not context.strip():
+        return {"answer": "No indexed content yet. Run a rebuild index and try again.", "sources": []}
     prompt = (
         "You are a concise assistant. Answer using only the provided context. "
         "If the answer is missing, say so briefly. Cite sources with [1], [2] based on the reference list.\n\n"
@@ -464,8 +518,17 @@ def api_chat(req: ChatRequest):
         f"QUESTION: {req.query}\n\n"
         "RESPONSE:"
     )
-    answer = ollama_complete(prompt, length="short")
-    return {"answer": answer.strip(), "sources": sources}
+    opts = {
+        "num_predict": int(os.getenv("CHAT_MAX_PREDICT", "256")),
+        "num_ctx": int(os.getenv("CHAT_MAX_CTX", "2048")),
+        "temperature": float(os.getenv("CHAT_TEMPERATURE", "0.2")),
+    }
+    try:
+        answer = ollama_complete(prompt, length="short", _options_override=opts)
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"Chat generation failed: {e}") from e
+
+    return {"answer": _clean_chat_answer(answer), "sources": sources}
 
 
 import tempfile

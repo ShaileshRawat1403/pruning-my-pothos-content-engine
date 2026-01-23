@@ -20,6 +20,12 @@ import re as _re
 
 from engine.rag.embeddings import embed_texts
 
+
+try:
+    from engine.graph.neo4j_store import record_run  # type: ignore
+except Exception:  # pragma: no cover
+    record_run = None  # type: ignore
+
 # --- Minimal .env loader (no external deps) ---
 def _load_dotenv_file():
     path = os.path.join(os.getcwd(), ".env")
@@ -1370,6 +1376,23 @@ def main(brief_fp: str):
     slug = brief["slug"]
     basename = safe_basename(brief.get("title", ""), slug)
     run_ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    run_started_at = datetime.datetime.utcnow().isoformat()
+
+    def _record_graph(status: str, reason: Optional[str] = None):
+        if record_run is None:
+            return
+        try:
+            record_run(
+                brief=brief,
+                slug=slug,
+                brief_path=brief_fp,
+                status=status,
+                reason=reason,
+                started_at=run_started_at,
+                finished_at=datetime.datetime.utcnow().isoformat(),
+            )
+        except Exception:
+            pass
     skip_publish_flag = os.getenv("SKIP_PUBLISH", "0").lower() in ("1", "true", "yes") or bool(brief.get("publish", {}).get("skip", False))
     run_variant = "dryrun" if skip_publish_flag else "run"
     run_suffix = f"{run_variant}_{run_ts}"
@@ -1526,6 +1549,7 @@ def main(brief_fp: str):
         except Exception:
             pass
         print(f"[ok] Regenerated section '{only_sec}'. Preview: file://{os.path.join(os.getcwd(), artifacts_dir, 'index.html')}")
+        _record_graph("ok", "regen_only")
         return
 
     # Sectional blog generation (opt-in)
@@ -1667,18 +1691,21 @@ def main(brief_fp: str):
         with open(os.path.join(meta_dir, "failure.json"), "w") as f:
             json.dump(ref_failure, f, indent=2)
         print("Audit fail: missing References or all filtered. Saved artifacts.")
+        _record_graph("audit_failed", (ref_failure or {}).get("reason"))
         return
     # Reject meta artifacts
     if re.search(r"^(Document:|Your task:|I\'m sorry|In a hypothet)", draft_md, flags=re.I | re.M):
         with open(os.path.join(meta_dir, "failure.json"), "w") as f:
             json.dump({"reason": "audit_failed_meta_artifacts"}, f, indent=2)
         print("Audit fail: meta artifacts detected. Saved artifacts.")
+        _record_graph("audit_failed", "meta_artifacts")
         return
     if no_external_flag:
         if len(draft_md) < min_len:
             with open(os.path.join(meta_dir, "failure.json"), "w") as f:
                 json.dump({"reason": "audit_failed_min_requirements", "len": len(draft_md)}, f, indent=2)
             print("Audit fail: too short. Saved artifacts.")
+            _record_graph("audit_failed", "min_length")
             return
     else:
         # Require at least one allowed URL and a sane length
@@ -1686,6 +1713,7 @@ def main(brief_fp: str):
             with open(os.path.join(meta_dir, "failure.json"), "w") as f:
                 json.dump({"reason": "audit_failed_min_requirements", "len": len(draft_md)}, f, indent=2)
             print("Audit fail: missing References or too short. Saved artifacts.")
+            _record_graph("audit_failed", "min_requirements")
             return
 
     # === Guardrail 1: Allowlist enforcement ===
@@ -1703,6 +1731,7 @@ def main(brief_fp: str):
                     "violations": violations
                 }, f, indent=2)
             print("[guard] Reference allowlist violation. Skipping publish. See meta/references_violation.json.")
+            _record_graph("guard_failed", "allowlist_violation")
             return
 
     block = [normalize_domain(d) for d in brief.get("sources", {}).get("block", [])]
@@ -1720,6 +1749,7 @@ def main(brief_fp: str):
                     "violations": blocked_hits
                 }, f, indent=2)
             print("[guard] Blocked domain detected. Skipping publish. See meta/references_blocked.json.")
+            _record_graph("guard_failed", "blocklist_violation")
             return
 
     # Versioned artifact paths (per-run, per-mode)
@@ -1793,6 +1823,7 @@ def main(brief_fp: str):
             })
 
     if duplicate_blocked:
+        _record_graph("duplicate_blocked", "duplicate_detected")
         return
 
     # Convert to HTML
@@ -1902,6 +1933,8 @@ def main(brief_fp: str):
             print("[info] Skipped publish (SKIP_PUBLISH=1). Artifacts written.")
         else:
             print("WP creds not set; skipped publishing. Artifacts written.")
+
+    _record_graph("ok")
 
 
 if __name__ == "__main__":

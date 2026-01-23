@@ -16,10 +16,11 @@ K_DEFAULT        = int(os.getenv("RETRIEVE_K", "6"))
 MAX_PER_SOURCE   = int(os.getenv("RETRIEVE_MAX_PER_SOURCE", "2"))  # diversify evidence
 
 # ---- Clients ----
-_store    = get_store()
-
 def _normalize_query_vec(text: str):
-    vecs = embed_texts([text], normalize=True)
+    try:
+        vecs = embed_texts([text], normalize=True)
+    except Exception:
+        return []
     if not vecs:
         return []
     return vecs[0]
@@ -48,8 +49,9 @@ def retrieve(query: str, k: int = K_DEFAULT) -> Tuple[str, List[str]]:
     qv = _normalize_query_vec(query)
     if not qv:
         return "", []
+    store = get_store()
     try:
-        tmp = _store.search(qv, max(1, k * 3))
+        tmp = store.search(qv, max(1, k * 3))
     except Exception:
         return "", []
 
@@ -63,6 +65,10 @@ def retrieve(query: str, k: int = K_DEFAULT) -> Tuple[str, List[str]]:
         r"i\'m sorry",
         r"in a hypothet",
         r"the greatest goodwin",
+        r"\[/?INST\]",
+        r"\[primer\]",
+        r"\[instruction\]",
+        r"^\s*(system|assistant|user)\s*:",
     ]
     bad = re.compile("|".join(patterns), re.I | re.M)
     filtered = []
@@ -78,7 +84,11 @@ def retrieve(query: str, k: int = K_DEFAULT) -> Tuple[str, List[str]]:
         ex_pat = os.getenv("RETRIEVE_EXCLUDE_REGEX")
         if ex_pat:
             ex = re.compile(ex_pat, re.I | re.M)
-            hits = [h for h in hits if not ex.search(h.get("text", "") or "")]
+            def _excluded(hit):
+                txt = hit.get("text", "") or ""
+                src = str(hit.get("source", "") or "")
+                return ex.search(txt) or ex.search(src)
+            hits = [h for h in hits if not _excluded(h)]
     except Exception:
         pass
 

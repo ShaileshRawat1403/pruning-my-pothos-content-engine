@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import ForceGraph2D from "react-force-graph-2d";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
@@ -29,6 +30,7 @@ const useFetch = (path, opts = {}) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [nonce, setNonce] = useState(0);
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
@@ -55,8 +57,8 @@ const useFetch = (path, opts = {}) => {
     return () => {
       cancelled = true;
     };
-  }, [path]);
-  return { data, loading, error, setData };
+  }, [path, nonce]);
+  return { data, loading, error, setData, refresh: () => setNonce((n) => n + 1) };
 };
 
 const formatDate = (ts) => {
@@ -296,6 +298,133 @@ const IndexPanel = ({ contentList, indexStats }) => {
             </li>
           ))}
         </ul>
+      </div>
+    </Panel>
+  );
+};
+
+const GraphPanel = () => {
+  const graph = useFetch("/api/graph");
+  const [filter, setFilter] = useState("all");
+  const [selected, setSelected] = useState(null);
+  const [dims, setDims] = useState({ w: 960, h: 520 });
+
+  useEffect(() => {
+    const update = () => {
+      const w = Math.min(1120, Math.max(320, window.innerWidth - 64));
+      const h = window.innerWidth < 768 ? 420 : 520;
+      setDims({ w, h });
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const nodes = graph.data?.nodes || [];
+  const links = graph.data?.links || [];
+  const types = useMemo(() => Array.from(new Set(nodes.map((n) => n.type))).sort(), [nodes]);
+
+  const visibleNodes = useMemo(() => {
+    if (filter === "all") return nodes;
+    return nodes.filter((n) => n.type === filter);
+  }, [nodes, filter]);
+
+  const visibleNodeIds = useMemo(() => new Set(visibleNodes.map((n) => n.id)), [visibleNodes]);
+
+  const visibleLinks = useMemo(
+    () => links.filter((l) => visibleNodeIds.has(l.source) && visibleNodeIds.has(l.target)),
+    [links, visibleNodeIds]
+  );
+
+  const colorMap = {
+    Brief: "#0d9488",
+    Run: "#f59e0b",
+    Topic: "#22c55e",
+    Persona: "#3b82f6",
+    Source: "#f97316",
+  };
+
+  return (
+    <Panel
+      title="Knowledge Graph"
+      actions={
+        <div className="flex items-center gap-2 text-xs text-muted">
+          <span>Nodes: {visibleNodes.length}</span>
+          <span>•</span>
+          <span>Links: {visibleLinks.length}</span>
+          <button className="btn btn-outline" onClick={() => graph.refresh()}>Refresh</button>
+        </div>
+      }
+    >
+      <div className="flex flex-wrap gap-2 mb-3">
+        <button
+          onClick={() => setFilter("all")}
+          className={`chip ${filter === "all" ? "chip-active" : ""}`}
+        >
+          All
+        </button>
+        {types.map((t) => (
+          <button
+            key={t}
+            onClick={() => setFilter(t)}
+            className={`chip ${filter === t ? "chip-active" : ""}`}
+          >
+            {t}
+          </button>
+        ))}
+      </div>
+      <div className="grid lg:grid-cols-[2fr_1fr] gap-4">
+        <div className="panel-inner">
+          {graph.loading && <p className="text-sm text-muted">Loading graph…</p>}
+          {graph.error && <p className="text-sm text-danger">{graph.error}</p>}
+          {!graph.loading && visibleNodes.length === 0 && (
+            <p className="text-sm text-muted">No graph data yet. Run a brief to populate Neo4j.</p>
+          )}
+          {visibleNodes.length > 0 && (
+            <ForceGraph2D
+              width={dims.w}
+              height={dims.h}
+              graphData={{ nodes: visibleNodes, links: visibleLinks }}
+              nodeLabel={(node) => `${node.type}: ${node.label}`}
+              nodeColor={(node) => colorMap[node.type] || "#94a3b8"}
+              linkColor={() => "rgba(148, 163, 184, 0.4)"}
+              linkDirectionalParticles={2}
+              linkDirectionalParticleWidth={1.2}
+              linkCurvature={0.12}
+              onNodeClick={(node) => setSelected(node)}
+            />
+          )}
+        </div>
+        <div className="space-y-3">
+          <div className="list-card">
+            <p className="text-xs text-muted">Selected node</p>
+            {selected ? (
+              <div className="mt-2 space-y-1">
+                <p className="font-semibold">{selected.label}</p>
+                <p className="text-xs text-muted">{selected.type}</p>
+                {selected.meta?.path && (
+                  <p className="text-xs text-muted break-all">Path: {selected.meta.path}</p>
+                )}
+                {selected.meta?.url && (
+                  <p className="text-xs text-muted break-all">URL: {selected.meta.url}</p>
+                )}
+              </div>
+            ) : (
+              <p className="text-sm text-muted mt-2">Click a node to inspect it.</p>
+            )}
+          </div>
+          <div className="list-card">
+            <p className="text-xs text-muted mb-2">Legend</p>
+            <div className="space-y-2 text-xs">
+              {Object.entries(colorMap).map(([type, color]) => (
+                <div key={type} className="flex items-center gap-2">
+                  <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
+                  <span>{type}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </Panel>
   );
@@ -925,7 +1054,7 @@ const sendChat = async () => {
             </div>
           </div>
           <div className="flex gap-2 flex-wrap justify-end">
-            {["overview", "ingest", "index", "generate", "preview", "lora", "settings", "checks"].map((tab) => (
+            {["overview", "ingest", "index", "generate", "preview", "graph", "lora", "settings", "checks"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -1196,6 +1325,7 @@ const sendChat = async () => {
         {activeTab === "index" && <IndexPanel contentList={contentList} indexStats={indexStats} />}
         {activeTab === "generate" && <GeneratePanel />}
         {activeTab === "preview" && <PreviewPanel />}
+        {activeTab === "graph" && <GraphPanel />}
         {activeTab === "lora" && <LoRAPanel />}
         {activeTab === "settings" && <SettingsPanel />}
         {activeTab === "checks" && <ChecksPanel />}
