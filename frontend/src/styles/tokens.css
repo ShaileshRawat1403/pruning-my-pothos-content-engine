@@ -1,44 +1,52 @@
 :root {
-  --color-bg: #f5f3ef;
+  --color-bg: #f7f5f1;
   --color-surface: #ffffff;
-  --color-surface-2: #f1f0ed;
-  --color-text: #1c1917;
-  --color-muted: #57534e;
-  --color-border: #e7e5e4;
-  --color-accent: #f97316;
+  --color-surface-2: #f0ede7;
+  --color-text: #111417;
+  --color-muted: #5b676b;
+  --color-border: #e3dfd8;
+  --color-accent: #0f766e;
+  --color-accent-strong: #0b5f58;
+  --color-accent-soft: #e2f3f0;
+  --color-accent-glow: rgba(15, 118, 110, 0.24);
+  --color-danger: #c2410c;
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
-  --radius-2xl: 2rem;
-  --shadow-subtle: 0 10px 30px -25px rgba(12, 10, 7, 0.2);
-  --shadow-card: 0 18px 60px -40px rgba(12, 10, 7, 0.35);
-  --shadow-elevated: 0 22px 80px -40px rgba(12, 10, 7, 0.5);
-  --font-heading: "Inter";
-  --font-body: "Inter";
-  --font-mono: "IBM Plex Mono";
+  --radius-xl: 1.4rem;
+  --radius-2xl: 1.8rem;
+  --shadow-subtle: 0 10px 30px -25px rgba(17, 20, 23, 0.2);
+  --shadow-card: 0 18px 60px -40px rgba(17, 20, 23, 0.35);
+  --shadow-elevated: 0 22px 80px -40px rgba(17, 20, 23, 0.5);
+  --font-heading: "Sora";
+  --font-body: "Manrope";
+  --font-mono: "JetBrains Mono";
 }
 
 .dark {
-  --color-bg: #0c0a07;
-  --color-surface: #161412;
-  --color-surface-2: #1f1c19;
-  --color-text: #f5f5f4;
-  --color-muted: #a8a29e;
-  --color-border: #292524;
-  --color-accent: #fb923c;
-  --shadow-subtle: 0 10px 30px -25px rgba(0, 0, 0, 0.4);
+  --color-bg: #0d1114;
+  --color-surface: #161b1f;
+  --color-surface-2: #1d242a;
+  --color-text: #f3f6f7;
+  --color-muted: #98a2a6;
+  --color-border: #2b3339;
+  --color-accent: #2dd4bf;
+  --color-accent-strong: #14b8a6;
+  --color-accent-soft: rgba(45, 212, 191, 0.12);
+  --color-accent-glow: rgba(45, 212, 191, 0.2);
+  --color-danger: #f97316;
+  --shadow-subtle: 0 10px 30px -25px rgba(0, 0, 0, 0.45);
   --shadow-card: 0 18px 60px -40px rgba(0, 0, 0, 0.65);
   --shadow-elevated: 0 22px 80px -40px rgba(0, 0, 0, 0.75);
 }
 
 ::selection {
-  background: rgba(251, 146, 60, 0.35);
+  background: var(--color-accent-soft);
   color: var(--color-text);
 }
 
 .dark ::selection {
-  background: rgba(251, 146, 60, 0.22);
+  background: rgba(45, 212, 191, 0.18);
   color: var(--color-text);
 }
 
@@ -68,7 +76,7 @@ pre {
 }
 
 .callout-key-takeaway {
-  background: linear-gradient(135deg, rgba(251, 146, 60, 0.08), rgba(251, 146, 60, 0));
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(15, 118, 110, 0));
 }
 
 @media (prefers-reduced-motion: reduce) {

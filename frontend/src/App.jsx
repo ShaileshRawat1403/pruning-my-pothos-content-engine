@@ -3,24 +3,24 @@ import React, { useEffect, useState } from "react";
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const Panel = ({ title, children, actions }) => (
-  <section className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl p-6 shadow-sm">
-    <div className="flex items-center justify-between mb-4">
-      <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">{title}</h2>
-      {actions}
+  <section className="panel">
+    <div className="panel-header">
+      <h2 className="panel-title">{title}</h2>
+      {actions ? <div className="panel-meta">{actions}</div> : null}
     </div>
     {children}
   </section>
 );
 
 const Stat = ({ label, value, loading, error }) => (
-  <div className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl p-4 shadow-sm">
-    <p className="text-xs font-bold uppercase text-stone-400 mb-2">{label}</p>
+  <div className="stat-card">
+    <p className="stat-label">{label}</p>
     {loading ? (
-      <div className="h-8 w-1/2 bg-stone-200 dark:bg-stone-800 rounded-md animate-pulse" />
+      <div className="stat-skeleton" />
     ) : error ? (
-      <p className="text-red-500 text-sm font-mono">{error}</p>
+      <p className="text-danger text-sm mono">{error}</p>
     ) : (
-      <p className="text-3xl font-bold text-amber-600">{value ?? "–"}</p>
+      <p className="stat-value">{value ?? "–"}</p>
     )}
   </div>
 );
@@ -89,14 +89,14 @@ const FolderNode = ({ name, node, onSelect, depth = 0 }) => {
   return (
     <div style={{ marginLeft: depth * 12 }}>
       <div
-        className={`flex items-center gap-2 py-1 cursor-pointer ${isFile ? "hover:text-amber-600" : "font-semibold"}`}
+        className={`flex items-center gap-2 py-1 cursor-pointer ${isFile ? "hover-accent" : "font-semibold"}`}
         onClick={() => {
           if (isFile && node.__file) onSelect(node.__file.path);
         }}
       >
         <span>{name}</span>
         {isFile && node.__file?.chunks !== undefined && (
-          <span className="text-xs text-stone-500">{node.__file.chunks ?? "?"} ch</span>
+          <span className="text-xs text-muted">{node.__file.chunks ?? "?"} ch</span>
         )}
       </div>
       {!isFile &&
@@ -162,11 +162,11 @@ const IngestPanel = ({ onReindex }) => {
     <Panel title="Ingest">
       <div className="grid md:grid-cols-3 gap-4">
         <div className="space-y-3">
-          <label className="text-sm font-bold text-stone-500">URLs (one per line)</label>
+          <label className="text-sm font-bold text-muted">URLs (one per line)</label>
           <textarea
             value={urls}
             onChange={(e) => setUrls(e.target.value)}
-            className="w-full h-40 p-3 font-mono text-xs bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
+            className="w-full h-40 field field-soft mono text-xs"
             placeholder="https://example.com/page"
           />
           <div className="flex gap-2 flex-wrap">
@@ -175,43 +175,43 @@ const IngestPanel = ({ onReindex }) => {
                 run("/api/ingest", { method: "POST", body: { urls: urls.split("\n").filter(Boolean) } })
               }
               disabled={busy}
-              className="px-4 py-2 rounded-lg bg-stone-900 text-white disabled:opacity-60"
+              className="btn btn-primary"
             >
               {busy ? "Ingesting..." : "Ingest URLs"}
             </button>
             <button
               onClick={onReindex}
-              className="px-4 py-2 rounded-lg bg-amber-500 text-white disabled:opacity-60"
+              className="btn btn-accent"
             >
               Rebuild Index
             </button>
           </div>
         </div>
         <div className="space-y-3">
-          <label className="text-sm font-bold text-stone-500">Paste Markdown</label>
+          <label className="text-sm font-bold text-muted">Paste Markdown</label>
           <input
             value={pastePath}
             onChange={(e) => setPastePath(e.target.value)}
-            className="w-full p-2 rounded-lg bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700"
+            className="field w-full"
             placeholder="folder/note.md"
           />
           <textarea
             value={pasteBody}
             onChange={(e) => setPasteBody(e.target.value)}
-            className="w-full h-32 p-3 font-mono text-xs bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
+            className="w-full h-32 field field-soft mono text-xs"
           />
           <button
             onClick={async () => {
               await saveContent(pastePath, pasteBody);
               setUploadStatus("Saved pasted content");
             }}
-            className="px-4 py-2 rounded-lg bg-stone-900 text-white"
+            className="btn btn-primary"
           >
             Save
           </button>
         </div>
         <div className="space-y-3">
-          <label className="text-sm font-bold text-stone-500">Upload .md/.txt</label>
+          <label className="text-sm font-bold text-muted">Upload .md/.txt</label>
           <input
             type="file"
             accept=".md,.txt"
@@ -224,7 +224,7 @@ const IngestPanel = ({ onReindex }) => {
             }}
             className="w-full text-sm"
           />
-          <label className="flex items-center gap-2 text-xs text-stone-500">
+          <label className="flex items-center gap-2 text-xs text-muted">
             <input
               type="checkbox"
               checked={reindexAfter}
@@ -232,14 +232,14 @@ const IngestPanel = ({ onReindex }) => {
             />
             Reindex after save/upload
           </label>
-          {uploadStatus && <p className="text-xs text-stone-500">{uploadStatus}</p>}
+          {uploadStatus && <p className="text-xs text-muted">{uploadStatus}</p>}
         </div>
       </div>
       <div className="mt-3">
-        <p className="text-sm font-bold text-stone-500 mb-2">Log</p>
-        <pre className="w-full h-32 p-3 font-mono text-xs bg-black text-white rounded-lg overflow-y-auto">
+        <p className="text-sm font-bold text-muted mb-2">Log</p>
+        <pre className="w-full h-32 mono text-xs scroll-panel overflow-y-auto">
           {log.join("\n")}
-          {busy && <div className="h-3 w-1/2 bg-stone-800 rounded-md animate-pulse mt-2" />}
+          {busy && <div className="stat-skeleton mt-2" />}
         </pre>
       </div>
     </Panel>
@@ -264,34 +264,31 @@ const IndexPanel = ({ contentList, indexStats }) => {
         <button
           onClick={() => run("/api/index")}
           disabled={busy}
-          className="px-4 py-2 rounded-lg bg-amber-500 text-white disabled:opacity-60"
+          className="btn btn-accent"
         >
           {busy ? "Indexing..." : "Rebuild Index"}
         </button>
-        <span className="text-sm text-stone-500">
+        <span className="text-sm text-muted">
           Last indexed: {lastIndexed ? new Date(lastIndexed * 1000).toLocaleString() : "–"}
         </span>
       </div>
-      <pre className="mt-3 w-full h-32 p-3 font-mono text-xs bg-black text-white rounded-lg overflow-y-auto">
+      <pre className="mt-3 w-full h-32 mono text-xs scroll-panel overflow-y-auto">
         {log.join("\n")}
       </pre>
       <div className="mt-4">
         <h4 className="text-sm font-bold mb-2">Stale files (edited since last index)</h4>
-        {stale.length === 0 && <p className="text-sm text-stone-500">None detected.</p>}
+        {stale.length === 0 && <p className="text-sm text-muted">None detected.</p>}
         <ul className="space-y-2">
           {stale.slice(0, 10).map((f) => (
-            <li
-              key={f.path}
-              className="flex items-center justify-between bg-stone-100 dark:bg-stone-900 px-3 py-2 rounded-lg text-sm"
-            >
+            <li key={f.path} className="flex items-center justify-between list-card text-sm">
               <span className="truncate">{f.path}</span>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-stone-500">
+                <span className="text-xs text-muted">
                   {new Date(f.mtime * 1000).toLocaleDateString()}
                 </span>
                 <button
                   onClick={() => reindexFile(f.path)}
-                  className="px-3 py-1 rounded bg-amber-500 text-white text-xs"
+                  className="chip chip-accent"
                 >
                   Reindex
                 </button>
@@ -349,11 +346,11 @@ const GeneratePanel = () => {
     <Panel title="Generate">
       <div className="grid md:grid-cols-2 gap-4">
         <div className="space-y-3">
-          <label className="text-sm font-bold text-stone-500">Brief</label>
+          <label className="text-sm font-bold text-muted">Brief</label>
           <select
             value={selectedBrief}
             onChange={(e) => setSelectedBrief(e.target.value)}
-            className="w-full p-3 bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 rounded-lg"
+            className="field w-full"
           >
             <option value="">-- Select a brief --</option>
             {(briefs.data || []).map((b) => (
@@ -365,46 +362,46 @@ const GeneratePanel = () => {
           <textarea
             value={briefContent}
             readOnly
-            className="w-full h-48 p-3 font-mono text-xs bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
+            className="w-full h-48 field field-soft mono text-xs"
           />
           <div className="grid md:grid-cols-2 gap-3">
             <input
               placeholder="GEN_MODEL"
               value={opts.model}
               onChange={(e) => setOpts({ ...opts, model: e.target.value })}
-              className="p-3 rounded-lg bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700"
+              className="field field-soft"
             />
             <input
               placeholder="GEN_MODEL_FALLBACK"
               value={opts.fallback}
               onChange={(e) => setOpts({ ...opts, fallback: e.target.value })}
-              className="p-3 rounded-lg bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700"
+              className="field field-soft"
             />
             <input
               placeholder="Temperature"
               value={opts.temp}
               onChange={(e) => setOpts({ ...opts, temp: e.target.value })}
-              className="p-3 rounded-lg bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700"
+              className="field field-soft"
               disabled={opts.deterministic}
             />
             <input
               placeholder="Seed"
               value={opts.seed}
               onChange={(e) => setOpts({ ...opts, seed: e.target.value })}
-              className="p-3 rounded-lg bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700"
+              className="field field-soft"
               disabled={opts.deterministic}
             />
             <input
               placeholder="GEN_MAX_PREDICT"
               value={opts.maxPredict}
               onChange={(e) => setOpts({ ...opts, maxPredict: e.target.value })}
-              className="p-3 rounded-lg bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700"
+              className="field field-soft"
             />
             <input
               placeholder="Persona"
               value={opts.persona}
               onChange={(e) => setOpts({ ...opts, persona: e.target.value })}
-              className="p-3 rounded-lg bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700"
+              className="field field-soft"
             />
           </div>
           <div className="flex items-center gap-4">
@@ -428,16 +425,16 @@ const GeneratePanel = () => {
           <button
             onClick={handleGenerate}
             disabled={busy || !selectedBrief}
-            className="px-4 py-2 rounded-lg bg-stone-900 text-white disabled:opacity-60"
+            className="btn btn-primary"
           >
             {busy ? "Generating..." : "Generate Draft"}
           </button>
         </div>
         <div>
-          <p className="text-sm font-bold text-stone-500 mb-2">Generation Log</p>
-          <pre className="w-full h-72 p-3 font-mono text-xs bg-black text-white rounded-lg overflow-y-auto">
+          <p className="text-sm font-bold text-muted mb-2">Generation Log</p>
+          <pre className="w-full h-72 mono text-xs scroll-panel overflow-y-auto">
             {log.join("\n")}
-            {busy && <div className="h-3 w-1/2 bg-stone-800 rounded-md animate-pulse mt-2" />}
+            {busy && <div className="stat-skeleton mt-2" />}
           </pre>
         </div>
       </div>
@@ -497,12 +494,12 @@ const PreviewPanel = () => {
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Filter by slug"
-          className="flex-1 p-3 bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 rounded-lg"
+          className="flex-1 field"
         />
         <select
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
-          className="flex-1 p-3 bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700 rounded-lg"
+          className="flex-1 field"
         >
           <option value="">-- Select a slug --</option>
           {filteredSlugs.map((s) => (
@@ -514,16 +511,16 @@ const PreviewPanel = () => {
       </div>
       {slug && (
         <div className="grid md:grid-cols-3 gap-3 mb-4">
-          <div className="bg-stone-100 dark:bg-stone-900 rounded-lg p-3 border border-stone-200 dark:border-stone-800">
+          <div className="scroll-panel">
             <p className="text-sm font-bold mb-1">{slug}</p>
-            <p className="text-xs text-stone-500">
+            <p className="text-xs text-muted">
               {meta?.title || "Untitled"} {meta?.tags && meta.tags.length ? `• ${meta.tags.join(", ")}` : ""}
             </p>
           </div>
           <div className="flex items-center gap-3">
             <a
               href={details?.paths?.index ? details.paths.index : `artifacts/${slug}/index.html`}
-              className="px-3 py-2 rounded-lg bg-amber-500 text-white text-sm"
+              className="btn btn-accent"
               target="_blank"
               rel="noreferrer"
             >
@@ -531,7 +528,7 @@ const PreviewPanel = () => {
             </a>
             <a
               href={details?.paths?.blog_html ? details.paths.blog_html : `artifacts/${slug}/blog/latest.html`}
-              className="px-3 py-2 rounded-lg bg-stone-200 dark:bg-stone-800 text-sm"
+              className="btn btn-outline"
               target="_blank"
               rel="noreferrer"
             >
@@ -544,34 +541,30 @@ const PreviewPanel = () => {
         <div className="grid md:grid-cols-3 gap-3">
           <div className="md:col-span-2">
             <h4 className="font-bold mb-2">Blog (Markdown)</h4>
-            <pre className="w-full h-64 p-3 font-mono text-xs bg-stone-100 dark:bg-stone-900 rounded overflow-auto">
+            <pre className="w-full h-64 mono text-xs scroll-panel overflow-auto">
               {details.content?.blog_md || "No blog content."}
             </pre>
             {details.content?.blog_md && (
               <div className="mt-2 space-y-2">
                 <div className="flex items-center gap-3">
-                  <label className="text-xs text-stone-500">Min length</label>
+                  <label className="text-xs text-muted">Min length</label>
                   <input
                     type="number"
                     value={minLen}
                     onChange={(e) => setMinLen(Number(e.target.value) || 0)}
-                    className="w-20 p-2 rounded bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700 text-xs"
+                    className="w-20 field field-soft text-xs"
                   />
-                  {regen.busy && <span className="text-xs text-stone-500">Regenerating…</span>}
+                  {regen.busy && <span className="text-xs text-muted">Regenerating…</span>}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {headingsFromMd(details.content.blog_md).map((sec) => (
-                    <button
-                      key={sec}
-                      onClick={() => handleRegen(sec)}
-                      className="px-3 py-1 rounded-lg bg-stone-200 dark:bg-stone-800 text-xs hover:bg-amber-500 hover:text-white transition-colors"
-                    >
+                    <button key={sec} onClick={() => handleRegen(sec)} className="chip">
                       Regen: {sec}
                     </button>
                   ))}
                 </div>
                 {regen.log.length > 0 && (
-                  <pre className="w-full h-24 p-2 font-mono text-xs bg-black text-white rounded overflow-auto">
+                  <pre className="w-full h-24 mono text-xs scroll-panel overflow-auto">
                     {regen.log.join("\n")}
                   </pre>
                 )}
@@ -581,19 +574,19 @@ const PreviewPanel = () => {
           <div className="space-y-3">
             <div>
               <h4 className="font-bold mb-2">LinkedIn</h4>
-              <pre className="w-full h-28 p-3 font-mono text-xs bg-stone-100 dark:bg-stone-900 rounded overflow-auto">
+              <pre className="w-full h-28 mono text-xs scroll-panel overflow-auto">
                 {details.content?.linkedin_md || "No LinkedIn content."}
               </pre>
             </div>
             <div>
               <h4 className="font-bold mb-2">Instagram</h4>
-              <pre className="w-full h-28 p-3 font-mono text-xs bg-stone-100 dark:bg-stone-900 rounded overflow-auto">
+              <pre className="w-full h-28 mono text-xs scroll-panel overflow-auto">
                 {details.content?.instagram_md || "No Instagram content."}
               </pre>
             </div>
             <div>
               <h4 className="font-bold mb-2">Meta files</h4>
-              <pre className="w-full h-28 p-3 font-mono text-xs bg-stone-100 dark:bg-stone-900 rounded overflow-auto">
+              <pre className="w-full h-28 mono text-xs scroll-panel overflow-auto">
                 {JSON.stringify(details.content?.meta_files || {}, null, 2)}
               </pre>
             </div>
@@ -633,7 +626,7 @@ const SettingsPanel = () => {
         <select
           value={value || ""}
           onChange={(e) => handleChange(key, e.target.value === "(none)" ? "" : e.target.value)}
-          className="md:col-span-2 p-3 rounded-lg bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700"
+          className="md:col-span-2 field field-soft"
         >
           {noneOpt.map((o) => (
             <option key={o} value={o}>
@@ -667,7 +660,7 @@ const SettingsPanel = () => {
             type={type}
             value={value}
             onChange={(e) => handleChange(key, e.target.value)}
-            className="w-24 p-2 rounded-lg bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700"
+            className="w-24 field field-soft"
           />
         </div>
       );
@@ -683,7 +676,7 @@ const SettingsPanel = () => {
       <input
         value={value}
         onChange={(e) => handleChange(key, e.target.value)}
-        className="md:col-span-2 p-3 rounded-lg bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700"
+        className="md:col-span-2 field field-soft"
       />
     );
   };
@@ -691,16 +684,16 @@ const SettingsPanel = () => {
   return (
     <Panel title="Settings (.env)">
       {loading && <p>Loading…</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-danger">{error}</p>}
       {form && (
         <div className="space-y-3">
           {Object.entries(form).map(([k, v]) => (
             <div key={k} className="grid md:grid-cols-3 gap-2 items-center">
-              <label className="text-sm font-bold text-stone-500">{k}</label>
+              <label className="text-sm font-bold text-muted">{k}</label>
               {renderField(k, v)}
             </div>
           ))}
-          <button onClick={save} className="px-4 py-2 rounded-lg bg-stone-900 text-white">
+          <button onClick={save} className="btn btn-primary">
             Save
           </button>
         </div>
@@ -718,23 +711,23 @@ const LoRAPanel = () => {
         <button
           onClick={() => run("/api/lora/dataset")}
           disabled={busy}
-          className="px-4 py-2 rounded-lg bg-stone-900 text-white disabled:opacity-60"
+          className="btn btn-primary"
         >
           {busy ? "Building…" : "Build Dataset"}
         </button>
         <button
           onClick={() => runSplit("/api/lora/split")}
           disabled={splitBusy}
-          className="px-4 py-2 rounded-lg bg-amber-500 text-white disabled:opacity-60"
+          className="btn btn-accent"
         >
           {splitBusy ? "Splitting…" : "Split Train/Val"}
         </button>
       </div>
       <div className="grid md:grid-cols-2 gap-3">
-        <pre className="w-full h-40 p-3 font-mono text-xs bg-black text-white rounded-lg overflow-y-auto">
+        <pre className="w-full h-40 mono text-xs scroll-panel overflow-y-auto">
           {log.join("\n")}
         </pre>
-        <pre className="w-full h-40 p-3 font-mono text-xs bg-black text-white rounded-lg overflow-y-auto">
+        <pre className="w-full h-40 mono text-xs scroll-panel overflow-y-auto">
           {splitLog.join("\n")}
         </pre>
       </div>
@@ -762,26 +755,26 @@ const ChecksPanel = () => {
   return (
     <Panel title="Checks">
       <div className="flex gap-3 mb-4">
-        <button className="px-4 py-2 rounded-lg bg-stone-900 text-white" onClick={() => check("/api/ollama-check", setOllama)}>
+        <button className="btn btn-primary" onClick={() => check("/api/ollama-check", setOllama)}>
           Check Ollama
         </button>
-        <button className="px-4 py-2 rounded-lg bg-amber-500 text-white" onClick={() => check("/api/wp-check", setWp)}>
+        <button className="btn btn-accent" onClick={() => check("/api/wp-check", setWp)}>
           Check WordPress
         </button>
       </div>
       <div className="grid md:grid-cols-3 gap-3">
-        <div className="p-3 rounded-lg border border-stone-200 dark:border-stone-800">
+        <div className="list-card">
           <h4 className="font-bold mb-2">Ollama</h4>
           <pre className="text-xs">{ollama ? JSON.stringify(ollama, null, 2) : "Waiting for response…"}</pre>
         </div>
-        <div className="p-3 rounded-lg border border-stone-200 dark:border-stone-800">
+        <div className="list-card">
           <h4 className="font-bold mb-2">WordPress</h4>
           <pre className="text-xs">{wp ? JSON.stringify(wp, null, 2) : "Waiting for response…"}</pre>
         </div>
-        <div className="p-3 rounded-lg border border-stone-200 dark:border-stone-800">
+        <div className="list-card">
           <h4 className="font-bold mb-2">Models</h4>
           {models.loading && <p>Loading…</p>}
-          {models.error && <p className="text-red-500">{models.error}</p>}
+          {models.error && <p className="text-danger">{models.error}</p>}
           {!models.loading && !models.error && (
             <ul className="text-xs space-y-1">
               {(models.data || []).map((m) => (
@@ -921,28 +914,22 @@ const sendChat = async () => {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50 dark:bg-[#0c0a07] text-stone-900 dark:text-stone-50">
-      <header className="sticky top-0 z-10 bg-white/80 dark:bg-[#0c0a07]/90 backdrop-blur border-b border-black/5 dark:border-white/5">
+    <div className="app-shell">
+      <header className="sticky top-0 z-10 app-header">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-stone-900 dark:bg-white text-white dark:text-stone-900 flex items-center justify-center font-bold">
-              CE
-            </div>
+            <div className="brand-mark">CE</div>
             <div>
               <p className="text-lg font-bold">Content Engine Dashboard</p>
-              <p className="text-xs text-stone-500">PruningMyPothos</p>
+              <p className="text-xs text-muted">PruningMyPothos</p>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap justify-end">
             {["overview", "ingest", "index", "generate", "preview", "lora", "settings", "checks"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-3 py-2 rounded-lg text-sm font-semibold ${
-                  activeTab === tab
-                    ? "bg-amber-500 text-white"
-                    : "bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-200 hover:bg-stone-200 dark:hover:bg-stone-700"
-                }`}
+                className={`tab-button ${activeTab === tab ? "tab-button-active" : ""}`}
               >
                 {tab}
               </button>
@@ -951,7 +938,7 @@ const sendChat = async () => {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-8 space-y-6">
+      <main className="max-w-6xl mx-auto px-6 py-8 space-y-6 fade-up">
         {activeTab === "overview" && (
           <>
             <div className="grid md:grid-cols-4 gap-4">
@@ -970,64 +957,54 @@ const sendChat = async () => {
                 error={indexStats.error}
               />
             </div>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setActiveTab("ingest")}
-                className="px-4 py-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-sm font-semibold"
-              >
+            <div className="flex flex-wrap gap-2 items-center">
+              <button onClick={() => setActiveTab("ingest")} className="btn btn-outline">
                 Ingest URLs
               </button>
               <button
                 onClick={() => quickIndex.run("/api/index")}
-                className="px-4 py-2 rounded-lg bg-amber-500 text-white text-sm font-semibold disabled:opacity-60"
+                className="btn btn-accent"
                 disabled={quickIndex.busy}
               >
                 {quickIndex.busy ? "Indexing…" : "Rebuild Index"}
               </button>
-              <button
-                onClick={() => setActiveTab("generate")}
-                className="px-4 py-2 rounded-lg bg-stone-100 dark:bg-stone-800 text-sm font-semibold"
-              >
+              <button onClick={() => setActiveTab("generate")} className="btn btn-outline">
                 Generate Draft
               </button>
               {quickIndex.log.length > 0 && (
-                <span className="text-xs text-stone-500">Index log: {quickIndex.log.slice(-1)[0]}</span>
+                <span className="text-xs text-muted">Index log: {quickIndex.log.slice(-1)[0]}</span>
               )}
             </div>
             <div className="grid lg:grid-cols-3 gap-4">
               <Panel
                 title="Knowledge Base"
-                actions={
-                  <span className="text-xs text-stone-500">
-                    Last indexed: {formatDate(indexStats.data?.last_indexed)}
-                  </span>
-                }
+                actions={<span>Last indexed: {formatDate(indexStats.data?.last_indexed)}</span>}
               >
-                <p className="text-sm text-stone-600 dark:text-stone-300 mb-3">
+                <p className="text-sm text-muted mb-3">
                   {indexStats.data?.vdb_backend
                     ? `Vector DB: ${indexStats.data.vdb_backend}`
                     : "Vector DB not detected"}
                 </p>
                 <div className="space-y-2">
-                  <p className="text-xs font-bold text-stone-500">Top files by chunks</p>
+                  <p className="text-xs font-bold text-muted">Top files by chunks</p>
                   <ul className="space-y-2">
                     {(indexStats.data?.top_files || []).map((f) => {
                       const max = Math.max(...(indexStats.data?.top_files || []).map((x) => x.chunks || 1), 1);
                       const pct = Math.min(100, Math.round((f.chunks / max) * 100));
                       return (
-                        <li key={f.path} className="text-sm bg-stone-100 dark:bg-stone-900 px-3 py-2 rounded-lg">
+                        <li key={f.path} className="text-sm list-card">
                           <div className="flex items-center justify-between gap-2">
                             <span className="truncate">{f.path}</span>
-                            <span className="text-xs font-mono text-stone-500">{f.chunks} ch</span>
+                            <span className="text-xs mono text-muted">{f.chunks} ch</span>
                           </div>
-                          <div className="w-full h-2 bg-stone-200 dark:bg-stone-800 rounded mt-1">
-                            <div className="h-2 bg-amber-500 rounded" style={{ width: `${pct}%` }}></div>
+                          <div className="progress-track mt-1">
+                            <div className="progress-bar" style={{ width: `${pct}%` }}></div>
                           </div>
                         </li>
                       );
                     })}
                     {!indexStats.loading && (!indexStats.data?.top_files || indexStats.data.top_files.length === 0) && (
-                      <li className="text-sm text-stone-500">No stats yet.</li>
+                      <li className="text-sm text-muted">No stats yet.</li>
                     )}
                   </ul>
                 </div>
@@ -1037,7 +1014,7 @@ const sendChat = async () => {
                   {(contentList.data || []).slice(0, 6).map((f) => (
                     <li
                       key={f.path}
-                      className="flex items-center justify-between text-sm bg-stone-100 dark:bg-stone-900 px-3 py-2 rounded-lg cursor-pointer"
+                      className="flex items-center justify-between text-sm list-card cursor-pointer"
                       onClick={() => {
                         setSelectedFile(f.path);
                         loadFile(f.path);
@@ -1045,16 +1022,16 @@ const sendChat = async () => {
                       }}
                     >
                       <div className="truncate">{f.path}</div>
-                      <div className="text-xs text-stone-500">{new Date(f.mtime * 1000).toLocaleDateString()}</div>
+                      <div className="text-xs text-muted">{new Date(f.mtime * 1000).toLocaleDateString()}</div>
                     </li>
                   ))}
-                  {contentList.loading && <li className="text-sm text-stone-500">Loading…</li>}
-                  {contentList.error && <li className="text-sm text-red-500">{contentList.error}</li>}
+                  {contentList.loading && <li className="text-sm text-muted">Loading…</li>}
+                  {contentList.error && <li className="text-sm text-danger">{contentList.error}</li>}
                 </ul>
               </Panel>
               <Panel title="Chat (RAG)">
-                <div className="h-64 overflow-y-auto space-y-3 mb-3 bg-stone-100 dark:bg-stone-900 rounded-lg p-3">
-                  {chatHistory.length === 0 && <p className="text-sm text-stone-500">Ask anything grounded in content/…</p>}
+                <div className="h-64 overflow-y-auto space-y-3 mb-3 scroll-panel">
+                  {chatHistory.length === 0 && <p className="text-sm text-muted">Ask anything grounded in content/…</p>}
                   {chatHistory.map((m, idx) => (
                     <div key={idx} className="text-sm space-y-1">
                       <p className={m.role === "user" ? "font-semibold" : ""}>{m.content}</p>
@@ -1063,7 +1040,7 @@ const sendChat = async () => {
                           {m.sources.map((s) => (
                             <button
                               key={s}
-                              className="text-xs px-2 py-1 rounded-full bg-stone-200 dark:bg-stone-800 hover:bg-amber-500 hover:text-white transition-colors"
+                              className="chip"
                               onClick={() => {
                                 setSelectedFile(s.replace(/^content\//, ""));
                                 loadFile(s.replace(/^content\//, ""));
@@ -1077,9 +1054,9 @@ const sendChat = async () => {
                       )}
                     </div>
                   ))}
-                  {chatBusy && <p className="text-sm text-stone-500">Thinking…</p>}
+                  {chatBusy && <p className="text-sm text-muted">Thinking…</p>}
                 </div>
-                <div className="flex items-center gap-3 mb-2 text-xs text-stone-500">
+                <div className="flex items-center gap-3 mb-2 text-xs text-muted">
                   <label className="flex items-center gap-1">
                     <input
                       type="checkbox"
@@ -1097,7 +1074,7 @@ const sendChat = async () => {
                       value={chatTopK}
                       onChange={(e) => setChatTopK(Number(e.target.value))}
                     />
-                    <span className="font-mono">{chatTopK}</span>
+                    <span className="mono">{chatTopK}</span>
                   </label>
                 </div>
                 <div className="flex gap-2">
@@ -1106,12 +1083,12 @@ const sendChat = async () => {
                     onChange={(e) => setChatInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && sendChat()}
                     placeholder="Ask a question about your notes"
-                    className="flex-1 p-3 rounded-lg bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700"
+                    className="flex-1 field"
                   />
                   <button
                     onClick={sendChat}
                     disabled={chatBusy}
-                    className="px-4 py-2 rounded-lg bg-amber-500 text-white disabled:opacity-60"
+                    className="btn btn-accent"
                   >
                     Send
                   </button>
@@ -1121,13 +1098,13 @@ const sendChat = async () => {
             <Panel
               title="Edit content"
               actions={
-                fileStatus ? <span className="text-xs text-stone-500">{fileStatus}</span> : null
+                fileStatus ? <span>{fileStatus}</span> : null
               }
             >
               <div className="grid lg:grid-cols-3 gap-4">
                 <div className="space-y-3">
-                  <label className="text-sm font-bold text-stone-500">Files</label>
-                  <div className="h-64 overflow-y-auto bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg p-3">
+                  <label className="text-sm font-bold text-muted">Files</label>
+                  <div className="h-64 overflow-y-auto scroll-panel">
                     {(contentList.data && Object.keys(groupByFolder(contentList.data)).length > 0 && (
                       Object.entries(groupByFolder(contentList.data)).map(([name, node]) => (
                         <FolderNode
@@ -1140,29 +1117,29 @@ const sendChat = async () => {
                           }}
                         />
                       ))
-                    )) || <p className="text-sm text-stone-500">No files yet.</p>}
+                    )) || <p className="text-sm text-muted">No files yet.</p>}
                   </div>
                   <div className="space-y-2">
-                    <p className="text-xs font-bold text-stone-500">New doc</p>
+                    <p className="text-xs font-bold text-muted">New doc</p>
                     <input
                       value={newFilePath}
                       onChange={(e) => setNewFilePath(e.target.value)}
                       placeholder="folder/new-doc.md"
-                      className="w-full p-3 rounded-lg bg-white dark:bg-stone-800 border border-stone-300 dark:border-stone-700"
+                      className="field w-full"
                     />
                     <textarea
                       value={newFileBody}
                       onChange={(e) => setNewFileBody(e.target.value)}
-                      className="w-full h-24 p-3 font-mono text-xs bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
+                      className="w-full h-24 field field-soft mono text-xs"
                     />
                     <div className="flex gap-2">
                       <button
                         onClick={createFile}
-                        className="px-4 py-2 rounded-lg bg-stone-900 text-white"
+                        className="btn btn-primary"
                       >
                         Create
                       </button>
-                      <label className="px-4 py-2 rounded-lg bg-amber-500 text-white cursor-pointer">
+                      <label className="btn btn-accent cursor-pointer">
                         Upload
                         <input
                           type="file"
@@ -1178,14 +1155,14 @@ const sendChat = async () => {
                   <textarea
                     value={fileBody}
                     onChange={(e) => setFileBody(e.target.value)}
-                    className="w-full h-64 p-3 font-mono text-xs bg-stone-100 dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded-lg"
+                    className="w-full h-64 field field-soft mono text-xs"
                     placeholder="Select a file to edit"
                   />
                   <div className="flex gap-3 mt-3">
                     <button
                       onClick={saveFile}
                       disabled={!selectedFile || fileLoading}
-                      className="px-4 py-2 rounded-lg bg-stone-900 text-white disabled:opacity-60"
+                      className="btn btn-primary"
                     >
                       {fileLoading ? "Saving..." : "Save"}
                     </button>
@@ -1205,7 +1182,7 @@ const sendChat = async () => {
                         }
                       }}
                       disabled={!selectedFile}
-                      className="px-4 py-2 rounded-lg bg-amber-500 text-white disabled:opacity-60"
+                      className="btn btn-accent"
                     >
                       Reindex file
                     </button>
